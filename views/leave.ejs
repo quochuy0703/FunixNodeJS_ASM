@@ -1,0 +1,128 @@
+<%- include('./includes/head.ejs') %>
+</head>
+<body class="h-100">
+    <%- include('./includes/navigation.ejs') %>
+
+    <!-- Body -->
+
+    <h2 class="text-center py-4">Gửi đơn xin nghỉ phép</h2>
+    <div class="container">
+      <div class="jumbotron py-3">
+        <p class="col-12">Lựa chọn các chức năng sau:</p>
+        <a class="btn btn-primary mx-2" href="#">
+          Điểm danh/ Kết thúc làm việc
+        </a>
+        <a class="btn btn-primary mx-2 disabled">Xin nghỉ phép</a>
+      </div>
+      <div class="jumbotron py-3">
+        <form action="/attendance/leave" method="POST">
+          <div class="row">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-4"><p>Tên nhân viên:</p></div>
+                <div class="col-8">
+                  <span>Mai quốc Huy</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-4"><p>Trạng thái:</p></div>
+                <div class="col-8">
+                  <span>Làm việc</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group form-inline col-md-6">
+              <label class="my-1 mr-2" for="anteLeaveStart"
+                >Ngày bắt đầu nghỉ:
+              </label>
+              <select
+                class="custom-select my-1 mr-sm-2"
+                id="anteLeaveStart"
+                name="anteLeaveStart"
+              >
+                <option value="1" selected>Sáng</option>
+                <option value="2">Chiều</option>
+              </select>
+              <input
+                type="date"
+                class="form-control"
+                name="startLeaveDate"
+                id="startLeaveDate"
+              />
+            </div>
+            <div class="form-group form-inline col-md-6">
+              <label class="my-1 mr-2" for="anteLeaveEnd">Ngày vào làm: </label>
+              <select
+                class="custom-select my-1 mr-sm-2"
+                id="anteLeaveEnd"
+                name="anteLeaveEnd"
+              >
+                <option value="1" selected>Sáng</option>
+                <option value="2">Chiều</option>
+              </select>
+              <input
+                type="date"
+                class="form-control"
+                name="endLeaveDate"
+                id="endLeaveDate"
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-4"><p>Số ngày nghỉ:</p></div>
+                <div class="col-2">
+                  <p>0.5</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="infoLeave">Lý do nghỉ phép:</label>
+            <textarea
+              class="form-control"
+              name="infoLeave"
+              id="infoLeave"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Gửi sếp duyệt</button>
+        </form>
+      </div>
+
+      <div class="jumbotron py-3">
+        <p>Thông tin ngày nghỉ phép:</p>
+        <div class="row">
+          <div class="col-4 d-flex justify-content-between">
+            <p>Số ngày còn lại năm 2021</p>
+            <p class="px-5 bg-success">14.5</p>
+          </div>
+          <div class="col-6 d-flex justify-content-between">
+            <p>Số phép năm 2022 có được đến hiện tại</p>
+            <p class="px-5 bg-success">9</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4 d-flex justify-content-between">
+            <p>Tổng ngày đã nghỉ</p>
+            <p class="px-5 bg-danger">14.5</p>
+          </div>
+          <div class="col-6 d-flex justify-content-between">
+            <p>Còn lại</p>
+            <p class="px-5 bg-success">9</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('./includes/end.ejs') %>
