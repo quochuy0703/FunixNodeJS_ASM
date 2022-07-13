@@ -6,6 +6,60 @@
     <!-- Body -->
 
     <h1 class="text-center">Điểm danh/kết thúc làm</h1>
+    <% if(isWork){%>
+      <div class="container">
+        <div class="jumbotron py-3">
+          <p class="col-12">Lựa chọn các chức năng sau:</p>
+          <a class="btn btn-primary mx-2 disabled">
+            Điểm danh/ Kết thúc làm việc
+          </a>
+          <a class="btn btn-primary mx-2" href="#">Xin nghỉ phép</a>
+        </div>
+        <div class="jumbotron py-3">
+          <form action="/checkout" method="POST">
+            <div class="row">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-4"><p>Tên nhân viên:</p></div>
+                  <div class="col-8">
+                    <span>Mai quốc Huy</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-4"><p>Trạng thái:</p></div>
+                  <div class="col-8">
+                    <span>Làm việc</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-4"><p>Thời gian bắt đầu:</p></div>
+                  <div class="col-8">
+                    <span>8h00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <button class="btn btn-primary" type="submit">
+              Kết thúc làm việc
+            </button>
+          </form>
+        </div>
+      </div>
+
+
+
+    
+
+    <% }else{%>
     <div class="container">
       <div class="jumbotron py-3">
         <p class="col-12">Lựa chọn các chức năng sau:</p>
@@ -15,7 +69,7 @@
         <a class="btn btn-primary mx-2" href="#">Xin nghỉ phép</a>
       </div>
       <div class="jumbotron py-3">
-        <form action="/attendance/checkin" method="POST">
+        <form action="/checkin" method="POST">
           <div class="row">
             <div class="col-6">
               <div class="row">
@@ -87,5 +141,6 @@
         </form>
       </div>
     </div>
+    <% }%>
 
     <%- include('./includes/end.ejs') %>
