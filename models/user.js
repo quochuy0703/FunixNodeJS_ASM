@@ -15,6 +15,11 @@ const userSchema = new Schema({
     type: Boolean,
     required: true,
   },
+  currentWorkHour: {
+    type: Schema.Types.ObjectId,
+    ref: "WorkedHour",
+    required: false,
+  },
   //   doB: {
   //     type: Date,
   //     required: true,
@@ -31,10 +36,10 @@ const userSchema = new Schema({
   //     type: String,
   //     required: true,
   //   },
-  //   annualLeave: {
-  //     type: Number,
-  //     required: true,
-  //   },
+  annualLeave: {
+    type: Number,
+    required: true,
+  },
   //   imageUrl: {
   //     type: String,
   //     required: true,

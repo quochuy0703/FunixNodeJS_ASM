@@ -9,19 +9,19 @@
     <div class="container">
       <div class="jumbotron py-3">
         <p class="col-12">Lựa chọn các chức năng sau:</p>
-        <a class="btn btn-primary mx-2" href="#">
+        <a class="btn btn-primary mx-2" href="/">
           Điểm danh/ Kết thúc làm việc
         </a>
         <a class="btn btn-primary mx-2 disabled">Xin nghỉ phép</a>
       </div>
       <div class="jumbotron py-3">
-        <form action="/attendance/leave" method="POST">
+        <form action="/leave" method="POST">
           <div class="row">
             <div class="col-6">
               <div class="row">
                 <div class="col-4"><p>Tên nhân viên:</p></div>
                 <div class="col-8">
-                  <span>Mai quốc Huy</span>
+                  <span><%= user.name%></span>
                 </div>
               </div>
             </div>
@@ -31,7 +31,10 @@
               <div class="row">
                 <div class="col-4"><p>Trạng thái:</p></div>
                 <div class="col-8">
-                  <span>Làm việc</span>
+                  <span><% if(user.isWork){%>Làm việc
+                  <%}else{%>
+                    Không làm việc
+                  <%}%></span>
                 </div>
               </div>
             </div>
@@ -90,8 +93,8 @@
             <label for="infoLeave">Lý do nghỉ phép:</label>
             <textarea
               class="form-control"
-              name="infoLeave"
-              id="infoLeave"
+              name="reasonLeave"
+              id="reasonLeave"
               rows="3"
             ></textarea>
           </div>
@@ -124,5 +127,7 @@
         </div>
       </div>
     </div>
+
+    <script src="script/leave.js"></script>
 
     <%- include('./includes/end.ejs') %>

@@ -6,16 +6,24 @@
     <!-- Body -->
 
     <h1 class="text-center">Điểm danh/kết thúc làm</h1>
-    <% if(isWork){%>
-      <div class="container">
-        <div class="jumbotron py-3">
-          <p class="col-12">Lựa chọn các chức năng sau:</p>
+    <div class="container">
+      <div class="card my-3">
+        <div class="card-header">
+          Lựa chọn các chức năng sau:
+        </div>
+        <div class="card-body">
           <a class="btn btn-primary mx-2 disabled">
             Điểm danh/ Kết thúc làm việc
           </a>
-          <a class="btn btn-primary mx-2" href="#">Xin nghỉ phép</a>
+          <a class="btn btn-primary mx-2" href="/leave">Xin nghỉ phép</a>
         </div>
-        <div class="jumbotron py-3">
+      </div>
+    <% if(isWork){%>
+      <div class="card my-3">
+        <div class="card-header">
+          <h4>Kết thúc làm</h4>
+        </div>
+        <div class="card-body">
           <form action="/checkout" method="POST">
             <div class="row">
               <div class="col-6">
@@ -42,7 +50,7 @@
                 <div class="row">
                   <div class="col-4"><p>Thời gian bắt đầu:</p></div>
                   <div class="col-8">
-                    <span>8h00</span>
+                      <span><%= startDate%></span>
                   </div>
                 </div>
               </div>
@@ -53,93 +61,90 @@
             </button>
           </form>
         </div>
-      </div>
-
-
-
-    
+      
+      
 
     <% }else{%>
-    <div class="container">
-      <div class="jumbotron py-3">
-        <p class="col-12">Lựa chọn các chức năng sau:</p>
-        <a class="btn btn-primary mx-2 disabled">
-          Điểm danh/ Kết thúc làm việc
-        </a>
-        <a class="btn btn-primary mx-2" href="#">Xin nghỉ phép</a>
-      </div>
-      <div class="jumbotron py-3">
-        <form action="/checkin" method="POST">
-          <div class="row">
-            <div class="col-6">
-              <div class="row">
-                <div class="col-4"><p>Tên nhân viên:</p></div>
-                <div class="col-8">
-                  <span>Mai quốc Huy</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <div class="row">
-                <div class="col-4"><p>Trạng thái:</p></div>
-                <div class="col-8">
-                  <span>Không làm việc</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <div class="row">
-                <div class="col-4"><p>Nơi làm việc</p></div>
-                <div class="col-8">
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      name="workPlace"
-                      id="workPlace1"
-                      value="1"
-                      checked
-                    />
-                    <label class="form-check-label" for="workPlace1">
-                      Làm việc tại công ty
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      name="workPlace"
-                      id="workPlace2"
-                      value="2"
-                    />
-                    <label class="form-check-label" for="workPlace2">
-                      Làm việc tại nhà
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      name="workPlace"
-                      id="workPlace3"
-                      value="3"
-                    />
-                    <label class="form-check-label" for="workPlace3">
-                      Làm việc tại nơi khách hàng
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <button class="btn btn-primary" type="submit">Điểm danh</button>
-        </form>
+      <div class="card my-3">
+        <div class="card-header">
+          <h4>Điểm danh</h4>
+        </div>
+        <div class="card-body">
+          <form action="/checkin" method="POST">
+            <div class="row">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-4"><p>Tên nhân viên:</p></div>
+                  <div class="col-8">
+                    <span>Mai quốc Huy</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-4"><p>Trạng thái:</p></div>
+                  <div class="col-8">
+                    <span>Không làm việc</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-4"><p>Nơi làm việc</p></div>
+                  <div class="col-8">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="workPlace"
+                        id="workPlace1"
+                        value="1"
+                        checked
+                      />
+                      <label class="form-check-label" for="workPlace1">
+                        Làm việc tại công ty
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="workPlace"
+                        id="workPlace2"
+                        value="2"
+                      />
+                      <label class="form-check-label" for="workPlace2">
+                        Làm việc tại nhà
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="workPlace"
+                        id="workPlace3"
+                        value="3"
+                      />
+                      <label class="form-check-label" for="workPlace3">
+                        Làm việc tại nơi khách hàng
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <button class="btn btn-primary" type="submit">Điểm danh</button>
+          </form>
+        </div>
       </div>
+    
+
     </div>
     <% }%>
 

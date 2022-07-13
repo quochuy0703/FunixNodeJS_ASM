@@ -1,4 +1,4 @@
-const mongoose = required("mongoose");
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 const workedHourSchema = new Schema({
@@ -13,10 +13,13 @@ const workedHourSchema = new Schema({
   },
   endHour: {
     type: Date,
-    required: true,
+    required: false,
   },
   workPlace: {
     type: Number,
     require: true,
   },
 });
+
+const WorkedHour = mongoose.model("workedHour", workedHourSchema);
+module.exports = WorkedHour;
