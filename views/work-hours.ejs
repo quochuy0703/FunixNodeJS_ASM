@@ -1,0 +1,63 @@
+<%- include('./includes/head.ejs') %>
+</head>
+<body class="h-100">
+    <%- include('./includes/navigation.ejs') %>
+
+    <!-- Body -->
+
+    <h1 class="text-center">Điểm danh/kết thúc làm</h1>
+    <div class="container">
+      <div class="card my-3">
+        <div class="card-header">
+          Lựa chọn các chức năng sau:
+        </div>
+        <div class="card-body">
+          <a class="btn btn-primary mx-2 disabled">
+            Điểm danh/ Kết thúc làm việc
+          </a>
+          <a class="btn btn-primary mx-2" href="/leave">Xin nghỉ phép</a>
+        </div>
+      </div>
+    
+      <div class="card my-3">
+        <div class="card-header">
+          <h4>Kết thúc làm</h4>
+        </div>
+        <div class="card-body">
+          <table class="table">
+           
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">CheckIn</th>
+                <th scope="col">CheckOut</th>
+                <th scope="col">Work Hour</th>
+                <th scope="col">Noi lam viec</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <% workedHours.forEach(workedHour=>{%>
+                <tr>
+                  <td colspan="5" class="text-center"><%= workedHour.workDate%></th>
+                </tr>
+                <% workedHour.sessionWorks.forEach((sessionWork,index) =>{ %>
+                    <tr>
+                      <th scope="row"><%= index%></th>
+                      <td><%= new Date(sessionWork.startHour).getHours()%>:<%=new Date(sessionWork.startHour).getMinutes()%></td>
+                      <td><% if(sessionWork.endHour){ %><%= new Date(sessionWork.endHour).getHours()%>:<%=new Date(sessionWork.endHour).getMinutes()%>%><% } else{  %>--<% } %></td>
+                      <td><%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) + (new Date().getTimezoneOffset()-60) * 60000).getHours()%> : <%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) ).getMinutes()%>: <%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) ).getSeconds()%></td>
+                      <td><% if(sessionWork.workPlace === 1) {%>Cong ty<%}else if(sessionWork.workPlace === 2){%>Nha<%} else{%>Khach hang<%}%></td>
+                    </tr>
+                <% })%>
+              <% })%>
+              
+            </tbody>
+          </table>
+        </div>
+      
+      
+
+   
+
+    <%- include('./includes/end.ejs') %>

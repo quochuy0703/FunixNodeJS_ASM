@@ -7,18 +7,31 @@ const workedHourSchema = new Schema({
     ref: "User",
     required: true,
   },
-  startHour: {
-    type: Date,
-    require: true,
-  },
-  endHour: {
-    type: Date,
-    required: false,
-  },
-  workPlace: {
+  workHours: {
     type: Number,
-    require: true,
+    required: true,
+    default: 0,
   },
+  workDate: {
+    type: String,
+    required: true,
+  },
+  sessionWorks: [
+    {
+      startHour: {
+        type: Date,
+        require: true,
+      },
+      endHour: {
+        type: Date,
+        required: false,
+      },
+      workPlace: {
+        type: Number,
+        require: true,
+      },
+    },
+  ],
 });
 
 const WorkedHour = mongoose.model("workedHour", workedHourSchema);

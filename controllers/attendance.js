@@ -4,9 +4,13 @@ const AnualLeave = require("../models/anualLeave");
 exports.getAttendance = (req, res, next) => {
   let stringDate = null;
   if (req.user.isWork) {
-    WorkedHour.findOne({ _id: req.user.currentWorkHour })
+    WorkedHour.findOne({ "sessionWorks._id": req.user.currentWorkHour })
+      .select({
+        sessionWorks: { $elemMatch: { _id: req.user.currentWorkHour } },
+      })
       .then((workHour) => {
-        const date = new Date(workHour.startHour);
+        console.log("getAttendance", workHour);
+        const date = new Date(workHour.sessionWorks[0].startHour);
         stringDate = date.getHours() + ":" + date.getMinutes();
         res.render("attendance", {
           pageTitle: "Attendance",
@@ -26,18 +30,40 @@ exports.getAttendance = (req, res, next) => {
 
 exports.postCheckIn = (req, res, next) => {
   console.log(req.body);
-  const work = new WorkedHour({
-    userId: req.user,
-    startHour: Date.now(),
-    endHour: null,
-    workPlace: parseInt(req.body.workPlace),
-  });
-  return work
-    .save()
 
-    .then((result) => {
+  const currentDate = new Date();
+  let stringDate = `${currentDate.getFullYear()}${
+    currentDate.getMonth() + 1
+  }${currentDate.getDate()}`;
+  WorkedHour.findOne({ workDate: stringDate, userId: req.user._id })
+    .then((resultWorkHour) => {
+      if (resultWorkHour) {
+        resultWorkHour.sessionWorks.push({
+          startHour: Date.now(),
+          endHour: null,
+          workPlace: parseInt(req.body.workPlace),
+        });
+        return resultWorkHour.save();
+      }
+      let sessionWork = [];
+      let workHour = {};
+      workHour.startHour = Date.now();
+      workHour.endHour = null;
+      workHour.workPlace = parseInt(req.body.workPlace);
+      sessionWork.push(workHour);
+      const work = new WorkedHour({
+        userId: req.user,
+        workDate: stringDate,
+        sessionWorks: sessionWork,
+      });
+
+      return work.save();
+    })
+
+    .then((workedHour) => {
+      let sessionWorks = workedHour.sessionWorks;
       req.user.isWork = true;
-      req.user.currentWorkHour = result;
+      req.user.currentWorkHour = sessionWorks[sessionWorks.length - 1]._id;
       return req.user.save();
     })
     .then((result) => {
@@ -48,9 +74,17 @@ exports.postCheckIn = (req, res, next) => {
 
 exports.postCheckOut = (req, res, next) => {
   console.log(req.body);
-  WorkedHour.findOne({ _id: req.user.currentWorkHour })
+  WorkedHour.findOne({ "sessionWorks._id": req.user.currentWorkHour })
+    .select("workHours")
+    .select({
+      sessionWorks: { $elemMatch: { _id: req.user.currentWorkHour } },
+    })
     .then((workHour) => {
-      workHour.endHour = Date.now();
+      workHour.sessionWorks[0].endHour = Date.now();
+      let hourDiff =
+        workHour.sessionWorks[0].endHour -
+        new Date(workHour.sessionWorks[0].startHour);
+      workHour.workHours = workHour.workHours + hourDiff;
       req.user.isWork = false;
       req.user.currentWorkHour = null;
       return workHour.save();
