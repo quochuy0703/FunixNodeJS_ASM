@@ -21,7 +21,7 @@
     
       <div class="card my-3">
         <div class="card-header">
-          <h4>Kết thúc làm</h4>
+          <h4>Phien lam viec</h4>
         </div>
         <div class="card-body">
           <table class="table">
@@ -39,17 +39,22 @@
             <tbody>
               <% workedHours.forEach(workedHour=>{%>
                 <tr>
-                  <td colspan="5" class="text-center"><%= workedHour.workDate%></th>
+                  <td colspan="5" class="text-center"><%= workedHour.workDate%></td>
                 </tr>
                 <% workedHour.sessionWorks.forEach((sessionWork,index) =>{ %>
                     <tr>
-                      <th scope="row"><%= index%></th>
+                      <th scope="row"><%= index+1 %></th>
                       <td><%= new Date(sessionWork.startHour).getHours()%>:<%=new Date(sessionWork.startHour).getMinutes()%></td>
                       <td><% if(sessionWork.endHour){ %><%= new Date(sessionWork.endHour).getHours()%>:<%=new Date(sessionWork.endHour).getMinutes()%>%><% } else{  %>--<% } %></td>
                       <td><%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) + (new Date().getTimezoneOffset()-60) * 60000).getHours()%> : <%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) ).getMinutes()%>: <%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) ).getSeconds()%></td>
                       <td><% if(sessionWork.workPlace === 1) {%>Cong ty<%}else if(sessionWork.workPlace === 2){%>Nha<%} else{%>Khach hang<%}%></td>
                     </tr>
                 <% })%>
+                <tr>
+                  <th colspan="3" class="text-center">Tong Cong</th>
+                  <td ><%= new Date(workedHour.workHours + ((new Date().getTimezoneOffset() -60)* 60000)).getHours()%>:<%= new Date(workedHour.workHours + (new Date().getTimezoneOffset() * 60000)).getMinutes()%>:<%= new Date(workedHour.workHours + (new Date().getTimezoneOffset() * 60000)).getSeconds()%></td>
+
+                </tr>
               <% })%>
               
             </tbody>
