@@ -9,6 +9,7 @@ const app = express();
 
 const attendanceRoutes = require("./routes/attendance");
 const workHoursRoutes = require("./routes/workHour");
+const covidRoutes = require("./routes/covid");
 
 const errorControllers = require("./controllers/errors");
 const { Z_HUFFMAN_ONLY } = require("zlib");
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 
 app.use(attendanceRoutes);
 app.use("/work-hour", workHoursRoutes);
+app.use("/covid", covidRoutes);
 
 app.use("/", errorControllers.get404);
 
@@ -48,6 +50,7 @@ mongoose
   //     isWork: false,
   //     currentWorkHour: null,
   //     annualLeave: 11,
+  //    injectionCovid:[]
   //   });
   //   return user.save();
   // })

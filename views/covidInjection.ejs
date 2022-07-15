@@ -1,0 +1,120 @@
+<%- include('./includes/head.ejs') %>
+</head>
+<body class="h-100">
+    <%- include('./includes/navigation.ejs') %>
+
+    <!-- Body -->
+
+    <h1 class="text-center">Thông tin làm việc</h1>
+    <div class="container">
+      <div class="card my-3">
+        <div class="card-header">
+          Lựa chọn các chức năng sau:
+        </div>
+        <div class="card-body">
+          <a class="btn btn-primary mx-2" href="/covid">
+           Thân nhiệt
+          </a>
+          <a class="btn btn-primary mx-2 disabled" href="/covid/injection">Tiêm Covid</a>
+          <a class="btn btn-primary mx-2" href="/covid/info-covid">Tình trạng Covid</a>
+        </div>
+      </div>
+    
+      <div class="card my-3">
+        <div class="card-header">
+          <h4 class="text-center">Đăng ký mũi tiêm</h4>
+        </div>
+        <div class="card-body">
+          <form action="/covid/injection" method="POST">
+            <div class="row"> 
+              <div class="col-md-4 input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Mũi tiêm</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01" name="index">
+                  <option selected>Choose...</option>
+                  <option value="1">Mũi 1</option>
+                  <option value="2">Mũi 2</option>
+                  <option value="3">Mũi 3</option>
+                </select>
+              </div>
+            <div class="col-md-4 input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" >Ngày giờ</span>
+                
+              </div>
+              <input type="datetime-local" class="form-control" name="date">
+              
+            </div>
+            <div class="col-md-4 input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect02" >Loại vacxin</label>
+              </div>
+              <select class="custom-select" id="inputGroupSelect02" name="type">
+                <option selected>Choose...</option>
+                <option value="1">Moderna</option>
+                <option value="2">Pfizer </option>
+                <option value="3">Astra Zecera</option>
+                <option value="4">Sinovac</option>
+                <option value="5">Sinopharm - Sinovax</option>
+                <option value="6">Spunik </option>
+              </select>
+            </div>
+          </div>
+
+           
+            
+            <button type="submit" class="btn btn-primary">Đăng ký</button>
+          </form>
+           
+            
+        </div>
+      </div>
+
+      <div class="card my-3">
+        <div class="card-header">
+          <h4 class="text-center">Chi tiết mũi tiêm</h4>
+        </div>
+        <div class="card-body">
+          
+          <% if(injectionsCovid.length >0){%>
+            <table class="table">
+           
+              <thead>
+                <tr>
+                  <th scope="col">Mũi tiêm</th>
+                  <th scope="col">Ngày</th>
+                  <th scope="col">Loại Vacxin</th>
+
+
+  
+                </tr>
+              </thead>
+              <tbody>
+              
+                  <% injectionsCovid.forEach((injection,index) =>{ %>
+                      <tr>
+                        <th scope="row"><%= injection.index %></th>
+                        <td><%= injection.dateInjection %></td>
+                        <td><%= injection.typeVacxin%></td>
+
+                      </tr>
+                  <% })%>
+
+                
+              </tbody>
+            </table>
+          <% } else{%>
+            <p>Chưa có thông tin</p>
+          <% }%>
+            
+        </div>
+      </div>
+
+        
+      
+      
+
+   
+
+    <%- include('./includes/end.ejs') %>

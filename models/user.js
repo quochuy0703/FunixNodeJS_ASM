@@ -44,6 +44,27 @@ const userSchema = new Schema({
   //     type: String,
   //     required: true,
   //   },
+  // isCovid:{
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'Covid',
+  //   required: true
+  // },
+  injectionCovid: [
+    {
+      index: {
+        type: Number,
+        required: true,
+      },
+      typeVacxin: {
+        type: Number,
+        required: true,
+      },
+      dateInjection: {
+        type: Date,
+        required: true,
+      },
+    },
+  ],
 });
 
 const User = mongoose.model("user", userSchema);

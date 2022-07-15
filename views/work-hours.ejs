@@ -5,7 +5,7 @@
 
     <!-- Body -->
 
-    <h1 class="text-center">Điểm danh/kết thúc làm</h1>
+    <h1 class="text-center">Quá trình làm việc</h1>
     <div class="container">
       <div class="card my-3">
         <div class="card-header">
@@ -13,15 +13,16 @@
         </div>
         <div class="card-body">
           <a class="btn btn-primary mx-2 disabled">
-            Điểm danh/ Kết thúc làm việc
+            Phiên làm việc
           </a>
-          <a class="btn btn-primary mx-2" href="/leave">Xin nghỉ phép</a>
+          <a class="btn btn-primary mx-2" href="/annualLeave">Ngày phép</a>
+          <a class="btn btn-primary mx-2" href="/salary">Chi tiết lương</a>
         </div>
       </div>
     
       <div class="card my-3">
         <div class="card-header">
-          <h4>Phien lam viec</h4>
+          <h4 class="text-center">Phiên làm việc</h4>
         </div>
         <div class="card-body">
           <table class="table">
@@ -46,7 +47,7 @@
                       <th scope="row"><%= index+1 %></th>
                       <td><%= new Date(sessionWork.startHour).getHours()%>:<%=new Date(sessionWork.startHour).getMinutes()%></td>
                       <td><% if(sessionWork.endHour){ %><%= new Date(sessionWork.endHour).getHours()%>:<%=new Date(sessionWork.endHour).getMinutes()%>%><% } else{  %>--<% } %></td>
-                      <td><%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) + (new Date().getTimezoneOffset()-60) * 60000).getHours()%> : <%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) ).getMinutes()%>: <%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) ).getSeconds()%></td>
+                      <td><% if(sessionWork.endHour){%><%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) + (new Date().getTimezoneOffset()-60) * 60000).getHours()%> : <%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) ).getMinutes()%>: <%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) ).getSeconds()%><% }else{%>Chua ket thuc<% } %></td>
                       <td><% if(sessionWork.workPlace === 1) {%>Cong ty<%}else if(sessionWork.workPlace === 2){%>Nha<%} else{%>Khach hang<%}%></td>
                     </tr>
                 <% })%>
