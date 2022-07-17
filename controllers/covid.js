@@ -1,14 +1,7 @@
 const Temp = require("../models/temp");
 const Covid = require("../models/covid");
 
-const TYPE_VACXIN = [
-  "Moderna",
-  "Pfizer",
-  "Astra Zecera",
-  "Sinovac",
-  "Sinopharm - Sinovax",
-  "Spunik",
-];
+const Constants = require("../utils/constants");
 
 exports.getCovid = (req, res, next) => {
   const temps = Temp.find({ userId: req.user._id })
@@ -42,7 +35,7 @@ exports.getInjection = (req, res, next) => {
   let injectionsCovid = [...req.user.injectionCovid];
   injectionsCovid = injectionsCovid.map((injection) => ({
     ...injection._doc,
-    typeVacxin: TYPE_VACXIN[injection.typeVacxin - 1],
+    typeVacxin: Constants.TYPE_VACXIN[injection.typeVacxin - 1],
   }));
 
   res.render("covidInjection", {
@@ -90,6 +83,10 @@ exports.postCovidInfo = (req, res, next) => {
   });
   return covidInfo
     .save()
+    .then((result) => {
+      req.user.isCovid = result;
+      req.user.save();
+    })
     .then((result) => {
       res.redirect("/covid/info-covid");
     })

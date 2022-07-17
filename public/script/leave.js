@@ -2,6 +2,7 @@ const startLeaveDate = document.getElementById("startLeaveDate");
 const endLeaveDate = document.getElementById("endLeaveDate");
 const anteLeaveStart = document.getElementById("anteLeaveStart");
 const anteLeaveEnd = document.getElementById("anteLeaveEnd");
+const annualLeave = document.getElementById("annualLeave");
 
 let flagTouchStartLeaveDate = false;
 let flagTouchEndLeaveDate = false;
@@ -26,6 +27,7 @@ const diffDate = () => {
       countday = countday + 0.5;
     }
     console.log(countday);
+    annualLeave.innerHTML = countday;
   }
 };
 

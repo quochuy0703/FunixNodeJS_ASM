@@ -18,7 +18,7 @@
           <a class="btn btn-primary mx-2" href="/leave">Xin nghỉ phép</a>
         </div>
       </div>
-    <% if(isWork){%>
+    <% if(user.isWork){%>
       <div class="card my-3">
         <div class="card-header">
           <h4>Kết thúc làm</h4>
@@ -30,7 +30,7 @@
                 <div class="row">
                   <div class="col-4"><p>Tên nhân viên:</p></div>
                   <div class="col-8">
-                    <span>Mai quốc Huy</span>
+                    <span><%= user.fullname %></span>
                   </div>
                 </div>
               </div>

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  name: {
+  fullname: {
     type: String,
     reuqired: true,
   },
@@ -24,10 +24,10 @@ const userSchema = new Schema({
   //     type: Date,
   //     required: true,
   //   },
-  //   salaryScale: {
-  //     type: Number,
-  //     required: true,
-  //   },
+  salaryScale: {
+    type: Number,
+    required: true,
+  },
   //   startDate: {
   //     type: Date,
   //     required: true,
@@ -44,11 +44,11 @@ const userSchema = new Schema({
   //     type: String,
   //     required: true,
   //   },
-  // isCovid:{
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'Covid',
-  //   required: true
-  // },
+  isCovid: {
+    type: Schema.Types.ObjectId,
+    ref: "Covid",
+    required: true,
+  },
   injectionCovid: [
     {
       index: {

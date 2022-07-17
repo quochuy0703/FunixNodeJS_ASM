@@ -45,8 +45,9 @@ mongoose
   .connect(MONGODB_URI)
   // .then((result) => {
   //   const user = new User({
-  //     name: "huy",
+  //     full: "Mai Quốc Huy",
   //     email: "test@gmail.com",
+  //      salaryScale:1.1
   //     isWork: false,
   //     currentWorkHour: null,
   //     annualLeave: 11,

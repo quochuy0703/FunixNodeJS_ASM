@@ -1,0 +1,92 @@
+<%- include('./includes/head.ejs') %>
+</head>
+<body class="h-100">
+    <%- include('./includes/navigation.ejs') %>
+
+    <!-- Body -->
+
+    <h1 class="text-center">Quá trình làm việc</h1>
+    <div class="container">
+      <div class="card my-3">
+        <div class="card-header">
+          Lựa chọn các chức năng sau:
+        </div>
+        <div class="card-body">
+          <a class="btn btn-primary mx-2 " href="/work-hour">
+            Phiên làm việc
+          </a>
+          <a class="btn btn-primary mx-2 " href="/work-hour/annual-leaves">Ngày phép</a>
+          <a class="btn btn-primary mx-2 disabled" href="/work-hour/salary">Chi tiết lương</a>
+        </div>
+      </div>
+    
+      <div class="card my-3">
+        <div class="card-header">
+          <h4 class="text-center">Chọn phiếu lương</h4>
+        </div>
+        <div class="card-body">
+          <form action="/work-hour/salary" method="POST">
+            <div class="row">
+              <div class="col-md-4 input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Năm</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01" name="yearSalary">
+                  <option selected>Chọn năm...</option>
+                  <option value="2022">2022</option>
+                  <option value="2021">2021</option>
+                  <option value="2020">2020</option>
+                  <option value="2019">2019</option>
+                  <option value="2018">2018</option>
+                  <option value="2017">2017</option>
+                  <option value="2016">2016</option>
+
+                </select>
+              </div>
+              <div class="col-md-4 input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect02">Tháng</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect02" name="monthSalary">
+                  <option selected>Chọn tháng...</option>
+                  <option value="01">Tháng 1</option>
+                  <option value="02">Tháng 2</option>
+                  <option value="03">Tháng 3</option>
+                  <option value="04">Tháng 4</option>
+                  <option value="05">Tháng 5</option>
+                  <option value="06">Tháng 6</option>
+                  <option value="07">Tháng 7</option>
+                  <option value="08">Tháng 8</option>
+                  <option value="09">Tháng 9</option>
+                  <option value="10">Tháng 10</option>
+                  <option value="11">Tháng 11</option>
+                  <option value="12">Tháng 12</option>
+
+                </select>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Lấy phiếu lương</button>
+          </form>
+        </div>
+
+
+        <div class="card my-3">
+          <div class="card-header">
+            <h4 class="text-center">Chi tiết lương tháng</h4>
+          </div>
+          <div class="card-body">
+            <% if(isPost) {%>
+            <p>Lương (salaryScale * 3000000 + (overTime - số giờ làm thiếu) * 200000): <%= salaryScale%>*300.000+(<%= sumHour%>)*200.000= <%= salary%></p>
+            <% } else{%>
+              <p>Chua co du lieu</p>
+            <% }%>
+             
+              
+          </div>
+      
+      
+
+   
+
+    <%- include('./includes/end.ejs') %>

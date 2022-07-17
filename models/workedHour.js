@@ -13,9 +13,10 @@ const workedHourSchema = new Schema({
     default: 0,
   },
   workDate: {
-    type: String,
+    type: Date,
     required: true,
   },
+
   sessionWorks: [
     {
       startHour: {
@@ -34,5 +35,32 @@ const workedHourSchema = new Schema({
   ],
 });
 
+workedHourSchema.statics.getWorkedHourByDate = function (stringDate, userId) {
+  return this.aggregate([
+    {
+      $addFields: {
+        dayOfString: {
+          $dateToString: { format: "%Y-%m-%d", date: "$workDate" },
+        },
+      },
+    },
+    { $match: { dayOfString: stringDate, userId: userId } },
+  ]);
+};
+
+workedHourSchema.statics.getWorkedHourByMonth = function (month, year, userId) {
+  return this.aggregate([
+    {
+      $addFields: {
+        monthOfString: {
+          $dateToString: { format: "%Y-%m", date: "$workDate" },
+        },
+      },
+    },
+    { $match: { monthOfString: `${year}-${month}`, userId: userId } },
+  ]);
+};
+
 const WorkedHour = mongoose.model("workedHour", workedHourSchema);
+
 module.exports = WorkedHour;

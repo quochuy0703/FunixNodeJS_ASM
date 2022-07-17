@@ -1,0 +1,63 @@
+<%- include('./includes/head.ejs') %>
+</head>
+<body class="h-100">
+    <%- include('./includes/navigation.ejs') %>
+
+    <!-- Body -->
+
+    <h1 class="text-center">Quá trình làm việc</h1>
+    <div class="container">
+      <div class="card my-3">
+        <div class="card-header">
+          Lựa chọn các chức năng sau:
+        </div>
+        <div class="card-body">
+          <a class="btn btn-primary mx-2 " href="/work-hour">
+            Phiên làm việc
+          </a>
+          <a class="btn btn-primary mx-2 disabled" href="/work-hour/annual-leaves">Ngày phép</a>
+          <a class="btn btn-primary mx-2" href="/work-hour/salary">Chi tiết lương</a>
+        </div>
+      </div>
+    
+      <div class="card my-3">
+        <div class="card-header">
+          <h4 class="text-center">Chi tiết ngày nghỉ phép</h4>
+        </div>
+        <div class="card-body">
+          <table class="table">
+           
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Bắt đầu</th>
+                <th scope="col">Kết thúc</th>
+                <th scope="col">Thời gian</th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+              
+
+                <% annualLeaves.forEach((annualLeave,index) =>{ %>
+                    <tr>
+                      <th scope="row"><%= index+1 %></th>
+                      <td><%= annualLeave.startDateLeave%></td>
+                      <td><%= annualLeave.endDateLeave%></td>
+                      <td><%= annualLeave.countDay%></td>
+                   
+                    </tr>
+                <% })%>
+
+
+              
+            </tbody>
+          </table>
+        </div>
+      
+      
+
+   
+
+    <%- include('./includes/end.ejs') %>

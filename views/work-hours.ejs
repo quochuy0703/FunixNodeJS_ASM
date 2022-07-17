@@ -15,8 +15,8 @@
           <a class="btn btn-primary mx-2 disabled">
             Phiên làm việc
           </a>
-          <a class="btn btn-primary mx-2" href="/annualLeave">Ngày phép</a>
-          <a class="btn btn-primary mx-2" href="/salary">Chi tiết lương</a>
+          <a class="btn btn-primary mx-2" href="/work-hour/annual-leaves">Ngày phép</a>
+          <a class="btn btn-primary mx-2" href="/work-hour/salary">Chi tiết lương</a>
         </div>
       </div>
     
@@ -30,30 +30,41 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">CheckIn</th>
-                <th scope="col">CheckOut</th>
-                <th scope="col">Work Hour</th>
-                <th scope="col">Noi lam viec</th>
+                <th scope="col">Bắt đầu</th>
+                <th scope="col">Kết thúc</th>
+                <th scope="col">Thời gian</th>
+                <th scope="col">Nơi làm việc</th>
 
               </tr>
             </thead>
             <tbody>
               <% workedHours.forEach(workedHour=>{%>
                 <tr>
-                  <td colspan="5" class="text-center"><%= workedHour.workDate%></td>
+                  <th colspan="5" class="text-center"><%= workedHour.workDate%></th>
                 </tr>
                 <% workedHour.sessionWorks.forEach((sessionWork,index) =>{ %>
                     <tr>
                       <th scope="row"><%= index+1 %></th>
                       <td><%= new Date(sessionWork.startHour).getHours()%>:<%=new Date(sessionWork.startHour).getMinutes()%></td>
                       <td><% if(sessionWork.endHour){ %><%= new Date(sessionWork.endHour).getHours()%>:<%=new Date(sessionWork.endHour).getMinutes()%>%><% } else{  %>--<% } %></td>
-                      <td><% if(sessionWork.endHour){%><%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) + (new Date().getTimezoneOffset()-60) * 60000).getHours()%> : <%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) ).getMinutes()%>: <%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) ).getSeconds()%><% }else{%>Chua ket thuc<% } %></td>
+                      <td><% if(sessionWork.endHour){%><%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) + (new Date().getTimezoneOffset()-60) * 60000).getHours()%>:<%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) ).getMinutes()%>:<%= new Date(new Date(sessionWork.endHour) - new Date(sessionWork.startHour) ).getSeconds()%><% }else{%>Chưa kết thúc<% } %></td>
                       <td><% if(sessionWork.workPlace === 1) {%>Cong ty<%}else if(sessionWork.workPlace === 2){%>Nha<%} else{%>Khach hang<%}%></td>
                     </tr>
                 <% })%>
                 <tr>
-                  <th colspan="3" class="text-center">Tong Cong</th>
-                  <td ><%= new Date(workedHour.workHours + ((new Date().getTimezoneOffset() -60)* 60000)).getHours()%>:<%= new Date(workedHour.workHours + (new Date().getTimezoneOffset() * 60000)).getMinutes()%>:<%= new Date(workedHour.workHours + (new Date().getTimezoneOffset() * 60000)).getSeconds()%></td>
+                  <th colspan="2" rowspan="3" class="text-center">Tổng cộng</th>
+                  <th>Tổng giờ</th>
+                  <td ><%= new Date(workedHour.workHours1 + ((new Date().getTimezoneOffset() -60)* 60000)).getHours()%>:<%= new Date(workedHour.workHours1 + (new Date().getTimezoneOffset() * 60000)).getMinutes()%>:<%= new Date(workedHour.workHours1 + (new Date().getTimezoneOffset() * 60000)).getSeconds()%></td>
+
+                </tr>
+                <tr>
+                  <th>Tổng thêm giờ</th>
+                  <td ><%= new Date(workedHour.overTime + ((new Date().getTimezoneOffset() -60)* 60000)).getHours()%>:<%= new Date(workedHour.overTime + (new Date().getTimezoneOffset() * 60000)).getMinutes()%>:<%= new Date(workedHour.overTime + (new Date().getTimezoneOffset() * 60000)).getSeconds()%></td>
+
+                </tr>
+                <tr>
+                  <th>Nghỉ phép</th>
+                  <td ><% if(workedHour.leave){%><%= workedHour.leave %><%}else{%><%=0.0%><%}%></td>
 
                 </tr>
               <% })%>
