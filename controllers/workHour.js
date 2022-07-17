@@ -1,11 +1,12 @@
 const WorkedHour = require("../models/workedHour");
 const AnnualLeave = require("../models/anualLeave");
+const Constants = require("../utils/constants");
+const Utils = require("../utils/utils");
 
 exports.getWorkHours = (req, res, next) => {
   AnnualLeave.getLeaveById(req.user._id)
     .then((results) => {
       return WorkedHour.find({ userId: req.user._id }).then((workedHours) => {
-        const eightHour = 8 * 60 * 60 * 1000;
         workedHours.forEach((workedHour) => {
           let sumHourDiff = 0;
           workedHour.sessionWorks.forEach((sessionWork) => {
@@ -15,26 +16,29 @@ exports.getWorkHours = (req, res, next) => {
           });
           workedHour.workHours1 = sumHourDiff;
 
-          if (sumHourDiff > eightHour) {
-            workedHour.overTime = sumHourDiff - eightHour;
+          if (sumHourDiff > Constants.EIGHT_HOUR_TO_MILISECOND) {
+            workedHour.overTime =
+              sumHourDiff - Constants.EIGHT_HOUR_TO_MILISECOND;
           } else {
             workedHour.overTime = 0;
           }
 
           const dateLeave = results.filter((result) => {
-            let stringDate = `${result.date.getFullYear()}-${
-              result.date.getMonth() + 1
-            }-${result.date.getDate()}`;
+            let stringDate = Utils.DATE_UTILS.stringDate1(result.date);
 
-            let stringDate1 = `${workedHour.workDate.getFullYear()}-${
-              workedHour.workDate.getMonth() + 1
-            }-${workedHour.workDate.getDate()}`;
+            let stringDate1 = Utils.DATE_UTILS.stringDate1(workedHour.workDate);
             return stringDate === stringDate1;
           });
 
           if (dateLeave.length === 1) {
             workedHour.leave = dateLeave[0].count;
           }
+
+          //phan render
+
+          workedHour._doc.workDate = Utils.DATE_UTILS.stringDate1(
+            workedHour._doc.workDate
+          );
         });
 
         res.render("work-hours", {
@@ -76,17 +80,13 @@ exports.postSalary = (req, res, next) => {
         "2022",
         req.user._id
       ).then((workedHours) => {
-        const eightHour = 8 * 60 * 60 * 1000;
         workedHours.forEach((workedHour) => {
           //tính phần nghỉ phép mỗi ngày
           const dateLeave = results.filter((result) => {
-            let stringDate = `${result.date.getFullYear()}-${
-              result.date.getMonth() + 1
-            }-${result.date.getDate()}`;
+            let stringDate = Utils.DATE_UTILS.stringDate1(result.date);
 
-            let stringDate1 = `${workedHour.workDate.getFullYear()}-${
-              workedHour.workDate.getMonth() + 1
-            }-${workedHour.workDate.getDate()}`;
+            let stringDate1 = Utils.DATE_UTILS.stringDate1(workedHour.workDate);
+
             return stringDate === stringDate1;
           });
 
@@ -104,16 +104,23 @@ exports.postSalary = (req, res, next) => {
           });
           workedHour.workHours1 = sumHourDiff;
 
-          if (sumHourDiff > eightHour) {
-            workedHour.overTime = sumHourDiff - eightHour;
+          if (sumHourDiff > Constants.EIGHT_HOUR_TO_MILISECOND) {
+            workedHour.overTime =
+              sumHourDiff - Constants.EIGHT_HOUR_TO_MILISECOND;
             workedHour.missTime = 0;
           } else {
             workedHour.overTime = 0;
-            if (sumHourDiff + workedHour.leave * 60 * 60 * 1000 > eightHour) {
+            if (
+              sumHourDiff +
+                workedHour.leave * Constants.ONE_HOUR_TO_MILISECOND >
+              Constants.EIGHT_HOUR_TO_MILISECOND
+            ) {
               workedHour.missTime = 0;
             } else {
               workedHour.missTime =
-                eightHour - sumHourDiff + workedHour.leave * 60 * 60 * 1000;
+                Constants.EIGHT_HOUR_TO_MILISECOND -
+                sumHourDiff +
+                workedHour.leave * Constants.ONE_HOUR_TO_MILISECOND;
             }
           }
           ////////////////////////////////
@@ -128,9 +135,10 @@ exports.postSalary = (req, res, next) => {
       workedHours.map((workedHour) => {
         sumHour = sumHour + (workedHour.overTime - workedHour.missTime);
       });
-      let oneHour = 60 * 60 * 1000;
+
       let salary =
-        req.user.salaryScale * 3000000 + (sumHour / oneHour) * 200000;
+        req.user.salaryScale * 3000000 +
+        (sumHour / Constants.ONE_HOUR_TO_MILISECOND) * 200000;
       let dongVN = Intl.NumberFormat("vn-VN", {
         style: "currency",
         currency: "VND",
@@ -142,7 +150,7 @@ exports.postSalary = (req, res, next) => {
         sumHour: new Intl.NumberFormat("vn-VN", {
           style: "decimal",
           maximumFractionDigits: "2",
-        }).format(sumHour / oneHour),
+        }).format(sumHour / Constants.ONE_HOUR_TO_MILISECOND),
         salary: dongVN.format(salary),
         workedHours: workedHours,
       });
