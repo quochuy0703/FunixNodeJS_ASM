@@ -13,7 +13,7 @@ exports.getCovid = (req, res, next) => {
         );
         return temp;
       });
-      res.render("covid", { pageTitle: "Covid", temps: temps });
+      res.render("covid", { pageTitle: "Covid", path: "/covid", temps: temps });
     })
     .catch((err) => console.log(err));
 };
@@ -50,6 +50,7 @@ exports.getInjection = (req, res, next) => {
 
   res.render("covidInjection", {
     pageTitle: "Thông tin tiêm chủng",
+    path: "/covid",
     injectionsCovid: injectionsCovid,
   });
 };
@@ -81,6 +82,7 @@ exports.getCovidInfo = (req, res, next) => {
       });
       res.render("covidInfo", {
         pageTitle: "Thong tin Covid",
+        path: "/covid",
         infoCovids: infoCovids,
       });
     })

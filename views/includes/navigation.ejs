@@ -14,16 +14,16 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
+      <li class="nav-item <%= path === '/' ? 'active':''%>">
         <a class="nav-link" href="/">Điểm danh </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item <%= path === '/profile' ? 'active':''%>">
         <a class="nav-link" href="/profile">Cá nhân</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item <%= path === '/work-hour' ? 'active':''%>">
         <a class="nav-link" href="/work-hour">Giờ làm việc</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item <%= path === '/covid' ? 'active':''%>">
         <a class="nav-link" href="/covid">Covid</a>
       </li>
     </ul>

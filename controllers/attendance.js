@@ -12,6 +12,7 @@ exports.getAttendance = (req, res, next) => {
     if (workedHours.length <= 0) {
       return res.render("attendance", {
         pageTitle: "Attendance",
+        path: "/",
         user: req.user,
         startDate: stringDate,
         workedHour: null,
@@ -21,6 +22,7 @@ exports.getAttendance = (req, res, next) => {
     if (req.user.isWork) {
       res.render("attendance", {
         pageTitle: "Attendance",
+        path: "/",
         user: req.user,
         startDate: Utils.DATE_UTILS.DateToHourString(
           workedHour.sessionWorks[workedHour.sessionWorks.length - 1].startHour
@@ -57,6 +59,7 @@ exports.getAttendance = (req, res, next) => {
       );
       res.render("attendance", {
         pageTitle: "Attendance",
+        path: "/",
         user: req.user,
         startDate: stringDate,
         workedHour: workedHour,
@@ -167,7 +170,7 @@ exports.postCheckOut = (req, res, next) => {
 };
 
 exports.getLeave = (req, res, next) => {
-  res.render("leave", { pageTitle: "Leave", user: req.user });
+  res.render("leave", { pageTitle: "Leave", path: "/", user: req.user });
 };
 
 exports.postLeave = (req, res, next) => {

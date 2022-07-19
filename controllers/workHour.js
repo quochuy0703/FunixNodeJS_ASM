@@ -75,6 +75,7 @@ exports.getWorkHours = (req, res, next) => {
 
           res.render("work-hours", {
             pageTitle: "Work Hour",
+            path: "/work-hour",
             workedHours: workedHours,
           });
         });
@@ -104,6 +105,7 @@ exports.getAnnualLeave = (req, res, next) => {
 
       res.render("annual-leaves", {
         pageTitle: "Ngày nghỉ",
+        path: "/work-hour",
         annualLeaves: annualLeaves,
       });
     })
@@ -113,6 +115,7 @@ exports.getAnnualLeave = (req, res, next) => {
 exports.getSalary = (req, res, next) => {
   res.render("salary", {
     pageTitle: "Chi tiết tiền lương",
+    path: "/work-hour",
     isPost: false,
   });
 };
@@ -195,6 +198,7 @@ exports.postSalary = (req, res, next) => {
       });
       res.render("salary", {
         pageTitle: "Chi tiết tiền lương",
+        path: "/work-hour",
         isPost: true,
         salaryScale: req.user.salaryScale,
         sumHour: new Intl.NumberFormat("vn-VN", {
