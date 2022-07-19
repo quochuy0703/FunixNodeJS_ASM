@@ -6,6 +6,7 @@ const Constants = require("../utils/constants");
 
 exports.getCovid = (req, res, next) => {
   const temps = Temp.find({ userId: req.user._id })
+    .sort({ dateTemp: -1 })
     .then((temps) => {
       temps = temps.map((temp) => {
         temp._doc.dateTemp = Utils.DATE_UTILS.dateTimeToStringForWeb(
