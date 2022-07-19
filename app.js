@@ -10,6 +10,7 @@ const app = express();
 const attendanceRoutes = require("./routes/attendance");
 const workHoursRoutes = require("./routes/workHour");
 const covidRoutes = require("./routes/covid");
+const profileRoutes = require("./routes/profile");
 
 const errorControllers = require("./controllers/errors");
 const { Z_HUFFMAN_ONLY } = require("zlib");
@@ -38,6 +39,7 @@ app.use((req, res, next) => {
 app.use(attendanceRoutes);
 app.use("/work-hour", workHoursRoutes);
 app.use("/covid", covidRoutes);
+app.use("/profile", profileRoutes);
 
 app.use("/", errorControllers.get404);
 
@@ -47,7 +49,11 @@ mongoose
   //   const user = new User({
   //     full: "Mai Quốc Huy",
   //     email: "test@gmail.com",
-  //      salaryScale:1.1
+  //doB: new Date(1992,07,14),
+  //      salaryScale:1.1,
+  // startDate:new Date(2020,07,14),
+  //department: "IT",
+  //imageUrl:'fsaf',
   //     isWork: false,
   //     currentWorkHour: null,
   //     annualLeave: 11,

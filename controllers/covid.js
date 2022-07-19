@@ -1,12 +1,18 @@
 const Temp = require("../models/temp");
 const Covid = require("../models/covid");
+const Utils = require("../utils/utils");
 
 const Constants = require("../utils/constants");
 
 exports.getCovid = (req, res, next) => {
   const temps = Temp.find({ userId: req.user._id })
     .then((temps) => {
-      console.log(temps);
+      temps = temps.map((temp) => {
+        temp._doc.dateTemp = Utils.DATE_UTILS.dateTimeToStringForWeb(
+          temp.dateTemp
+        );
+        return temp;
+      });
       res.render("covid", { pageTitle: "Covid", temps: temps });
     })
     .catch((err) => console.log(err));
@@ -33,10 +39,14 @@ exports.postTemp = (req, res, next) => {
 
 exports.getInjection = (req, res, next) => {
   let injectionsCovid = [...req.user.injectionCovid];
-  injectionsCovid = injectionsCovid.map((injection) => ({
-    ...injection._doc,
-    typeVacxin: Constants.TYPE_VACXIN[injection.typeVacxin - 1],
-  }));
+  injectionsCovid = injectionsCovid.map((injection) => {
+    injection._doc.dateInjection = Utils.DATE_UTILS.dateTimeToStringForWeb(
+      injection.dateInjection
+    );
+    injection._doc.typeVacxin =
+      Constants.TYPE_VACXIN[injection._doc.typeVacxin - 1];
+    return injection;
+  });
 
   res.render("covidInjection", {
     pageTitle: "Thông tin tiêm chủng",
@@ -61,7 +71,14 @@ exports.postInjection = (req, res, next) => {
 
 exports.getCovidInfo = (req, res, next) => {
   Covid.find({ userId: req.user._id })
+    .sort({ dateCovid: -1 })
     .then((infoCovids) => {
+      infoCovids = infoCovids.map((info) => {
+        info._doc.dateCovid = Utils.DATE_UTILS.dateTimeToStringForWeb(
+          info.dateCovid
+        );
+        return info;
+      });
       res.render("covidInfo", {
         pageTitle: "Thong tin Covid",
         infoCovids: infoCovids,

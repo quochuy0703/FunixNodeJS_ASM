@@ -20,30 +20,30 @@ const userSchema = new Schema({
     ref: "WorkedHour",
     required: false,
   },
-  //   doB: {
-  //     type: Date,
-  //     required: true,
-  //   },
+  doB: {
+    type: Date,
+    required: true,
+  },
   salaryScale: {
     type: Number,
     required: true,
   },
-  //   startDate: {
-  //     type: Date,
-  //     required: true,
-  //   },
-  //   department: {
-  //     type: String,
-  //     required: true,
-  //   },
+  startDate: {
+    type: Date,
+    required: true,
+  },
+  department: {
+    type: String,
+    required: true,
+  },
   annualLeave: {
     type: Number,
     required: true,
   },
-  //   imageUrl: {
-  //     type: String,
-  //     required: true,
-  //   },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
   isCovid: {
     type: Schema.Types.ObjectId,
     ref: "Covid",

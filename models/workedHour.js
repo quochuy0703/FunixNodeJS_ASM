@@ -7,11 +7,11 @@ const workedHourSchema = new Schema({
     ref: "User",
     required: true,
   },
-  workHours: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
+  // workHours: {
+  //   type: Number,
+  //   required: true,
+  //   default: 0,
+  // },
   workDate: {
     type: Date,
     required: true,
