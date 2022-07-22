@@ -13,14 +13,40 @@
         </div>
 
         <div class="card-body">
-          <a class="btn btn-primary mx-2 disabled">
-            Phiên làm việc
-          </a>
-          <a class="btn btn-primary mx-2" href="/work-hour/annual-leaves">Ngày phép</a>
-          <a class="btn btn-primary mx-2" href="/work-hour/salary">Chi tiết lương</a>
-          <a class="btn btn-primary mx-2" href="/work-hour/search">Tìm kiếm</a>
+          <div class="row">
+
+            <div class="col-md-8 col-sm-12">
+              <form class="form-row form-inline" action="/work-hour/search" method="POST">
+                <div class="form-group col-md-4 col-sm-4 col-xs-12">
+                  <input type="text" class="form-control" name="searchText" placeholder="search">
+                </div>
+                  <div class="form-group col-md-4 col-sm-4 col-xs-12">
+                   
+                    <select name="searchChoose" class="form-control">
+                      <option selected>Choose...</option>
+                      <option value="1">Ngày làm việc</option>
+                      
+                    </select>
+                  </div>
+                  
+         
+                
+                <button type="submit" class="col-md-2 col-sm-4 col-xs-12 btn btn-primary">Tìm kiếm</button>
+              </form>
+              <p>Hướng dẫn: </p>
+              <p>Tìm kiếm theo ngày làm việc:  </p>
+
+              <p>để tìm kiếm theo ngày thì đánh cú pháp: dXX (VD: d07 - tìm ngày 07) </p>
+              <p>để tìm kiếm theo tháng thì đánh cú pháp: mXX (VD: m07 - tìm tháng 07) </p>
+              <p>để tìm kiếm theo năm thì đánh cú pháp: yXXXX (VD: y2022 - tìm năm 2022) </p>
+              <p>để tìm kiếm theo ngày thì đánh cú pháp: xx-xx-xxxx (VD: 17-07-2022 - tìm ngày 17-07-2022) </p>
+            </div>
+              
+            
+            
+          </div>
           
-        </div>
+          </div>
           
       </div>
     
@@ -29,6 +55,7 @@
           <h4 class="text-center">Phiên làm việc</h4>
         </div>
         <div class="card-body">
+          <% if(workedHours !== null){%>
           <table class="table">
            
             <thead>
@@ -66,15 +93,14 @@
                   <td ><%= workedHour.overTime%></td>
 
                 </tr>
-                <tr>
-                  <th>Nghỉ phép</th>
-                  <td ><% if(workedHour.leave){%><%= workedHour.leave %><%}else{%><%=0.0%><%}%></td>
-
-                </tr>
+               
               <% })%>
               
             </tbody>
           </table>
+          <% }else{%>
+            <p>Chưa có dữ liệu</p>
+          <% }%>
         </div>
       
       

@@ -17,20 +17,20 @@
       <div class="jumbotron py-3">
         <form action="/leave" method="POST">
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-8 col-sm-8 col-xs-12">
               <div class="row">
-                <div class="col-4"><p>Tên nhân viên:</p></div>
-                <div class="col-8">
+                <div class="col-md-4 col-sm-6 col-xs-6"><p>Tên nhân viên:</p></div>
+                <div class="col-md-8 col-sm-6 col-xs-6">
                   <span><%= user.fullname%></span>
                 </div>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-8 col-sm-8 col-xs-12">
               <div class="row">
-                <div class="col-4"><p>Trạng thái:</p></div>
-                <div class="col-8">
+                <div class="col-md-4 col-sm-6 col-xs-6"><p>Trạng thái:</p></div>
+                <div class="col-md-8 col-sm-6 col-xs-6">
                   <span><% if(user.isWork){%>Làm việc
                   <%}else{%>
                     Không làm việc
@@ -79,10 +79,10 @@
           </div>
 
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-8 col-sm-8 col-xs-12">
               <div class="row">
-                <div class="col-4"><p>Số ngày nghỉ:</p></div>
-                <div class="col-2">
+                <div class="col-md-4 col-sm-6 col-xs-6"><p>Số ngày nghỉ:</p></div>
+                <div class="col-md-8 col-sm-6 col-xs-6">
                   <p id="annualLeave">--</p>
                 </div>
               </div>
@@ -106,16 +106,12 @@
       <div class="jumbotron py-3">
         <p>Thông tin ngày nghỉ phép:</p>
         <div class="row">
-          <div class="col-md-4 col-sm-12 col-xs-12 d-flex justify-content-between">
-            <p>Số ngày còn lại năm 2022</p>
+          <div class="col-md-6 col-sm-9 col-xs-12 d-flex justify-content-between">
+            <p>Số ngày nghỉ còn lại</p>
             
             <div><p class="px-5 bg-success"><%= user.annualLeave%></p></div>
           </div>
-          <div class="col-md-4 col-sm-12 col-xs-12 d-flex justify-content-between">
-            <p>Tổng ngày đã nghỉ năm 2022</p>
-            <div><p class="px-5 bg-danger">9</p></div>
-            
-          </div>
+          
         </div>
 
       </div>

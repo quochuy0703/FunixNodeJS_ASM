@@ -4,7 +4,9 @@ const Utils = require("../utils/utils");
 
 const Constants = require("../utils/constants");
 
+//GET --> /covid
 exports.getCovid = (req, res, next) => {
+  //tìm kiếm thông tin covid và hiển thị
   const temps = Temp.find({ userId: req.user._id })
     .sort({ dateTemp: -1 })
     .then((temps) => {
@@ -18,9 +20,9 @@ exports.getCovid = (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
-
+//POST --> /covid/temp
 exports.postTemp = (req, res, next) => {
-  console.log(req.body);
+  //tìm kiếm thông tin nhiệt độ và hiển thị
   let dateTemp = new Date();
   if (req.body.date) {
     dateTemp = new Date(req.body.date);
@@ -38,7 +40,9 @@ exports.postTemp = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
+//GET --> /covid/injection
 exports.getInjection = (req, res, next) => {
+  //lấy thông tin mũi tiêm và hiển thị
   let injectionsCovid = [...req.user.injectionCovid];
   injectionsCovid = injectionsCovid.map((injection) => {
     injection._doc.dateInjection = Utils.DATE_UTILS.dateTimeToStringForWeb(
@@ -56,8 +60,10 @@ exports.getInjection = (req, res, next) => {
   });
 };
 
+//POST --> /covid/injection
 exports.postInjection = (req, res, next) => {
-  console.log(req.body);
+  //tạo mới thông tin mũi tiêm và lưu vào mảng injectionCovid của user
+  //sau đó lưu thông tin lên mongodb
   const injectionCovid = req.user.injectionCovid;
   const injection = {
     index: parseInt(req.body.index),
@@ -71,7 +77,9 @@ exports.postInjection = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
+//GET --> /covid/info-covid
 exports.getCovidInfo = (req, res, next) => {
+  //tìm kiếm thông tin covid và hiển thị
   Covid.find({ userId: req.user._id })
     .sort({ dateCovid: -1 })
     .then((infoCovids) => {
@@ -92,11 +100,13 @@ exports.getCovidInfo = (req, res, next) => {
     });
 };
 
+//POST --> /covid/info-covid
 exports.postCovidInfo = (req, res, next) => {
-  console.log(req.body);
+  //nếu không có thông tin thì trả về trang /covid/info-covid
   if (!req.body.covid) {
     return res.redirect("/covid/info-covid");
   }
+  //tạo thông tin covid và lưu vào mongodb
   const covidInfo = new Covid({
     userId: req.user,
     isCovid: req.body.covid === "1" ? true : false,

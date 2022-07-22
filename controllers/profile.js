@@ -1,25 +1,29 @@
 const Utils = require("../utils/utils");
+
+//GET --> /profile
 exports.getProfile = (req, res, next) => {
   const user = { ...req.user._doc };
   user.doB = Utils.DATE_UTILS.stringDate1(user.doB);
   user.startDate = Utils.DATE_UTILS.stringDate1(user.startDate);
   res.render("profile", {
-    pageTitle: "Profile",
+    pageTitle: "Thông tin nhân viên",
     user: user,
     path: "/profile",
     edit: false,
   });
 };
 
+//GET --> /profile/edit
 exports.getEditProfile = (req, res, next) => {
   res.render("profile", {
-    pageTitle: "Profile",
+    pageTitle: "Thông tin nhân viên",
     user: req.user,
     path: "/profile",
     edit: true,
   });
 };
 
+//POST --> /profile/edit
 exports.postEditProfile = (req, res, next) => {
   console.log(req.body);
   req.user.imageUrl = req.body.imageUrl;

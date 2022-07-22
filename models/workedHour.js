@@ -35,6 +35,11 @@ const workedHourSchema = new Schema({
   ],
 });
 
+//hàm tìm kếm phiên làm việc theo ngày
+//tham số:
+//stringdate: ngày cần tìm kiếm
+//userId: Id cần tìm kiếm
+//trả về mảng phiên làm việc
 workedHourSchema.statics.getWorkedHourByDate = function (stringDate, userId) {
   return this.aggregate([
     {
@@ -48,6 +53,12 @@ workedHourSchema.statics.getWorkedHourByDate = function (stringDate, userId) {
   ]);
 };
 
+//hàm tìm kếm phiên làm việc theo tháng
+//tham số:
+//month: tháng cần tìm kiếm
+//year: năm cần tìm kiếm
+//userId: Id cần tìm kiếm
+//trả về mảng phiên làm việc
 workedHourSchema.statics.getWorkedHourByMonth = function (month, year, userId) {
   return this.aggregate([
     {
@@ -58,6 +69,29 @@ workedHourSchema.statics.getWorkedHourByMonth = function (month, year, userId) {
       },
     },
     { $match: { monthOfString: `${year}-${month}`, userId: userId } },
+  ]);
+};
+
+//hàm tìm kếm phiên làm việc theo regex
+//tham số:
+//regex: regex tìm kiếm
+//userId: Id cần tìm kiếm
+//trả về mảng phiên làm việc
+
+workedHourSchema.statics.getWorkedByRegex = function (regex, userId) {
+  return this.aggregate([
+    {
+      $addFields: {
+        returns: {
+          $regexMatch: {
+            input: { $dateToString: { format: "%d-%m-%Y", date: "$workDate" } },
+            regex: regex,
+            options: "i",
+          },
+        },
+      },
+    },
+    { $match: { returns: true, userId: userId } },
   ]);
 };
 
