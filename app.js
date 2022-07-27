@@ -3,6 +3,10 @@ const bodyParser = require("body-parser");
 const path = require("path");
 
 const mongoose = require("mongoose");
+
+const session = require("express-session");
+const mongoDBStore = require("connect-mongodb-session")(session);
+
 const User = require("./models/user");
 
 const app = express();
@@ -11,11 +15,14 @@ const attendanceRoutes = require("./routes/attendance");
 const workHoursRoutes = require("./routes/workHour");
 const covidRoutes = require("./routes/covid");
 const profileRoutes = require("./routes/profile");
+const authRoutes = require("./routes/auth");
 
 const errorControllers = require("./controllers/errors");
 
 const MONGODB_URI =
   "mongodb+srv://huymq:huymq123456@cluster0-gm4fb.mongodb.net/funixAsm?retryWrites=true&w=majority";
+
+const store = new mongoDBStore({ uri: MONGODB_URI, collection: "sessions" });
 
 //set view engine
 app.set("view engine", "ejs");
@@ -25,9 +32,21 @@ app.set("views", "views");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(
+  session({
+    secret: "my secret",
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  })
+);
+
 //tìm kiếm user
 app.use((req, res, next) => {
-  User.findOne({ email: "test@gmail.com" })
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
     .then((user) => {
       if (!user) {
         return res.redirect("/");
@@ -40,6 +59,7 @@ app.use((req, res, next) => {
 
 //sử dụng các router
 app.use(attendanceRoutes);
+app.use(authRoutes);
 app.use("/work-hour", workHoursRoutes);
 app.use("/covid", covidRoutes);
 app.use("/profile", profileRoutes);

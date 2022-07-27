@@ -13,6 +13,11 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+
+  password: {
+    type: String,
+    required: true,
+  },
   //hiện đang làm việc hay không? làm việc: true; không làm việc: false
   isWork: {
     type: Boolean,
