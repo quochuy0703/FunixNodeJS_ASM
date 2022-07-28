@@ -2,13 +2,15 @@ const express = require("express");
 
 const Router = express.Router();
 
+const isAuth = require("../middleware/is-auth");
+
 const workHoursControllers = require("../controllers/workHour");
 
-Router.get("/", workHoursControllers.getWorkHours);
-Router.get("/annual-leaves", workHoursControllers.getAnnualLeave);
-Router.get("/salary", workHoursControllers.getSalary);
-Router.post("/salary", workHoursControllers.postSalary);
-Router.get("/search", workHoursControllers.getSearch);
-Router.post("/search", workHoursControllers.postSearch);
+Router.get("/", isAuth, workHoursControllers.getWorkHours);
+Router.get("/annual-leaves", isAuth, workHoursControllers.getAnnualLeave);
+Router.get("/salary", isAuth, workHoursControllers.getSalary);
+Router.post("/salary", isAuth, workHoursControllers.postSalary);
+Router.get("/search", isAuth, workHoursControllers.getSearch);
+Router.post("/search", isAuth, workHoursControllers.postSearch);
 
 module.exports = Router;

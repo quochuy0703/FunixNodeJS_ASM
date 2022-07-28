@@ -17,7 +17,6 @@ exports.postLogin = (req, res, next) => {
       }
     })
     .catch((err) => console.log(err));
-  res.render("login", { pageTitle: "Login", path: "/login" });
 };
 
 exports.getSignup = (req, res, next) => {
@@ -26,4 +25,11 @@ exports.getSignup = (req, res, next) => {
 
 exports.postSignup = (req, res, next) => {
   res.render("signup", { pageTitle: "Signup", path: "/signup" });
+};
+
+exports.postLogout = (req, res, next) => {
+  req.session.destroy((err) => {
+    console.log(err);
+    res.redirect("/");
+  });
 };

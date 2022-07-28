@@ -9,8 +9,6 @@ const mongoDBStore = require("connect-mongodb-session")(session);
 
 const User = require("./models/user");
 
-const app = express();
-
 const attendanceRoutes = require("./routes/attendance");
 const workHoursRoutes = require("./routes/workHour");
 const covidRoutes = require("./routes/covid");
@@ -22,7 +20,14 @@ const errorControllers = require("./controllers/errors");
 const MONGODB_URI =
   "mongodb+srv://huymq:huymq123456@cluster0-gm4fb.mongodb.net/funixAsm?retryWrites=true&w=majority";
 
+const app = express();
+
 const store = new mongoDBStore({ uri: MONGODB_URI, collection: "sessions" });
+
+// Catch errors
+store.on("error", function (error) {
+  console.log(error);
+});
 
 //set view engine
 app.set("view engine", "ejs");
@@ -55,6 +60,12 @@ app.use((req, res, next) => {
       next();
     })
     .catch((err) => console.log(err));
+});
+
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+
+  next();
 });
 
 //sử dụng các router
