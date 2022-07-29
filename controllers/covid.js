@@ -1,4 +1,5 @@
 const Temp = require("../models/temp");
+const User = require("../models/user");
 const Covid = require("../models/covid");
 const Utils = require("../utils/utils");
 
@@ -119,6 +120,33 @@ exports.postCovidInfo = (req, res, next) => {
     })
     .then((result) => {
       res.redirect("/covid/info-covid");
+    })
+    .catch((err) => console.log(err));
+};
+
+//GET --> /covid/covid-staff
+exports.getCovidStaff = (req, res, next) => {
+  User.find({ department: req.user.department, isManager: false })
+    .populate("isCovid")
+    .then((users) => {
+      users.map((user) => {
+        user._doc.startDate = Utils.DATE_UTILS.stringDate1(user.startDate);
+        if (user.isCovid) {
+          if (user.isCovid.isCovid) {
+            user._doc.isCovid = "Dương tính";
+          } else {
+            user._doc.isCovid = "Âm tính";
+          }
+        } else {
+          user._doc.isCovid = "Chưa có thông tin";
+        }
+        user._doc.injectionCovid = user._doc.injectionCovid.length + " mũi";
+      });
+      res.render("covid-staff", {
+        pageTitle: "Thông tin covid",
+        path: "/manager",
+        users: users,
+      });
     })
     .catch((err) => console.log(err));
 };

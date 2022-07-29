@@ -64,6 +64,11 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
+  if (req.hasOwnProperty("user")) {
+    res.locals.isManager = req.session.user.isManager;
+  } else {
+    res.locals.isManager = false;
+  }
 
   next();
 });

@@ -12,5 +12,6 @@ Router.get("/injection", isAuth, covidControllers.getInjection);
 Router.post("/injection", isAuth, covidControllers.postInjection);
 Router.get("/info-covid", isAuth, covidControllers.getCovidInfo);
 Router.post("/info-covid", isAuth, covidControllers.postCovidInfo);
+Router.get("/info-staff", isAuth, covidControllers.getCovidStaff);
 
 module.exports = Router;

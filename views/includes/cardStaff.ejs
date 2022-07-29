@@ -1,0 +1,53 @@
+<div class="container_card">
+  <div class="my_header">
+    <div class="my_header_left">
+      <input type="checkbox" />
+    </div>
+    <div class="my_header_right">
+      <!-- {/* <div className="header_button">
+          <button>Action</button>
+        </div>
+        <div className="header_button">
+          <button>Action</button>
+        </div> */} -->
+    </div>
+  </div>
+  <div class="my_middle">
+    <div class="my_middle_image">
+      <img
+        class="my_middle_image_avatar"
+        src="/images/alberto.png"
+        alt="avatar"
+      />
+    </div>
+    <div class="my_middle_content">
+      <div class="my_middle_content_name">
+        <strong><%= user.fullname %></strong>
+      </div>
+      <div class="my_middle_content_job">
+        <small>Nhân viên</small>
+      </div>
+    </div>
+  </div>
+  <div class="my_footer_card">
+    <div class="my_footer_start">
+      <div class="my_footer_start_dept">
+        <p>
+          <strong>Phòng Ban</strong>
+        </p>
+        <p><%= user.department %></p>
+      </div>
+      <div class="my_footer_start_joinDate">
+        <p>
+          <strong>Ng. vào làm</strong>
+        </p>
+        <p><%= user.startDate %></p>
+      </div>
+    </div>
+    <div class="my_footer_end my-1">
+      <p>Covid: <%= user.isCovid %></p>
+      <p>Mũi tiêm: <%= user.injectionCovid %></p>
+      <p>Mũi tiêm: +084.31245436</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<%- include('./includes/head.ejs') %>
+<link rel="stylesheet" href="/css/cardStaff.css">
+</head>
+<body class="h-100">
+    <%- include('./includes/navigation.ejs') %>
+
+    <!-- Body -->
+
+    <h1 class="text-center">Thông tin làm việc</h1>
+    <div class="container">
+      <div class="card my-3">
+        <div class="card-header">
+          Lựa chọn các chức năng sau:
+        </div>
+        <div class="card-body">
+          <a class="btn btn-primary mx-2" href="/covid">
+           Thân nhiệt
+          </a>
+          <a class="btn btn-primary mx-2" href="/covid/injection">Tiêm Covid</a>
+          <a class="btn btn-primary mx-2" href="/covid/info-covid">Tình trạng Covid</a>
+          <%if(isManager){%>
+          <a class="btn btn-primary mx-2 disabled" href="/covid/info-staff">Quản lý nhân viên</a>
+          <%}%>
+        </div>
+      </div>
+    
+      <div class="card my-3">
+        <div class="card-header">
+          <h4 class="text-center">Thông tin nhân viên</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <% users.forEach(user =>{%>
+             <%- include('./includes/cardStaff.ejs',{user: user})%>
+             <%  })%>
+            
+          </div>
+          
+           
+            
+        </div>
+      </div>
+      
+
+      <div class="card my-3">
+        <div class="card-header">
+          <h4 class="text-center">Chi tiết Nhân viên</h4>
+        </div>
+        <div class="card-body">
+           
+            
+        </div>
+      </div>
+
+        
+      
+      
+
+   
+
+    <%- include('./includes/end.ejs') %>

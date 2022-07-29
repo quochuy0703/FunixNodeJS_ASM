@@ -59,11 +59,16 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+
+  isManager: {
+    type: Boolean,
+    require: true,
+  },
   //tình trạng covid hiện tại
   isCovid: {
     type: Schema.Types.ObjectId,
-    ref: "Covid",
-    required: true,
+    ref: "covid",
+    required: false,
   },
   //thông tin các mũi tiêm
   injectionCovid: [
