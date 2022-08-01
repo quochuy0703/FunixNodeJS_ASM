@@ -25,8 +25,11 @@ exports.getEditProfile = (req, res, next) => {
 
 //POST --> /profile/edit
 exports.postEditProfile = (req, res, next) => {
-  console.log(req.body);
-  req.user.imageUrl = req.body.imageUrl;
+  const image = req.file;
+  if (!image) {
+    res.redirect("/profile");
+  }
+  req.user.imageUrl = image.path;
   req.user
     .save()
     .then((result) => {

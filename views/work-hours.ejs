@@ -29,6 +29,25 @@
           <h4 class="text-center">Phiên làm việc</h4>
         </div>
         <div class="card-body">
+          <%- include('./includes/pagination.ejs',{currentPage: currentPage, hasNextPage: hasNextPage, nextPage: nextPage, 
+            hasPreviousPage: hasPreviousPage, previousPage: previousPage, lastPage: lastPage})%>
+            <form action="/work-hour/page-size" method="POST" >
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Hiển thị số ngày</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01" name="itemsPerPage" onchange="this.form.submit()">
+                  <% ["10","20","30","40"].forEach(item =>{%>
+                    <% if(item === pageSize.toString()){%>
+                      <option  value="<%= item%>" selected><%= item%></option>
+                    <% }else{%>
+                      <option value="<%= item%>"><%= item%></option>
+                    <% }%>
+                  
+                  <% })%>
+                </select>
+              </div>
+            </form>
           <table class="table">
            
             <thead>

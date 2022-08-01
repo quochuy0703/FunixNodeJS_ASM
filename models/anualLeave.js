@@ -133,6 +133,7 @@ const getDay = (date, leave) => {
 //trả về một mảng chứa các object
 //{date: ngày nghỉ phép, leaveId: id của ngày nghỉ phép chứa trong db, count: số giờ nghỉ phép trong ngày nghỉ phép}
 anualLeaveSchema.statics.getLeaveByMonth = function (month, year, userId) {
+  userId = new mongoose.mongo.ObjectId(userId);
   return this.aggregate([
     {
       $addFields: {

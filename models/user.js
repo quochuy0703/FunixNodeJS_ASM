@@ -70,6 +70,11 @@ const userSchema = new Schema({
     ref: "covid",
     required: false,
   },
+  temp: {
+    type: Schema.Types.ObjectId,
+    ref: "temp",
+    required: false,
+  },
   //thông tin các mũi tiêm
   injectionCovid: [
     {

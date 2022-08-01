@@ -6,11 +6,16 @@ const isAuth = require("../middleware/is-auth");
 
 const workHoursControllers = require("../controllers/workHour");
 
-Router.get("/", isAuth, workHoursControllers.getWorkHours);
-Router.get("/annual-leaves", isAuth, workHoursControllers.getAnnualLeave);
-Router.get("/salary", isAuth, workHoursControllers.getSalary);
-Router.post("/salary", isAuth, workHoursControllers.postSalary);
-Router.get("/search", isAuth, workHoursControllers.getSearch);
-Router.post("/search", isAuth, workHoursControllers.postSearch);
+Router.get("/", isAuth.isAuth, workHoursControllers.getWorkHours);
+Router.get(
+  "/annual-leaves",
+  isAuth.isAuth,
+  workHoursControllers.getAnnualLeave
+);
+Router.get("/salary", isAuth.isAuth, workHoursControllers.getSalary);
+Router.post("/salary", isAuth.isAuth, workHoursControllers.postSalary);
+Router.get("/search", isAuth.isAuth, workHoursControllers.getSearch);
+Router.post("/search", isAuth.isAuth, workHoursControllers.postSearch);
+Router.post("/page-size", isAuth.isAuth, workHoursControllers.postPageSize);
 
 module.exports = Router;

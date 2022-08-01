@@ -13,26 +13,20 @@
           Lựa chọn các chức năng sau:
         </div>
         <div class="card-body">
-          <a class="btn btn-primary mx-2" href="/covid">
-           Thân nhiệt
-          </a>
-          <a class="btn btn-primary mx-2" href="/covid/injection">Tiêm Covid</a>
-          <a class="btn btn-primary mx-2" href="/covid/info-covid">Tình trạng Covid</a>
-          <%if(isManager){%>
-          <a class="btn btn-primary mx-2 disabled" href="/covid/info-staff">Quản lý nhân viên</a>
-          <%}%>
+          
         </div>
       </div>
     
       <div class="card my-3">
         <div class="card-header text-center">
-          <h4 class="text-center">Thông tin nhân viên</h4><a  href="/covid/all-staff">Xuất pdf</a>
+          <h4 class="text-center">Thông tin nhân viên</h4>
         </div>
         <div class="card-body">
           <div class="row d-flex justify-content-around">
-            <% users.forEach(user =>{%>
-             <%- include('./includes/cardStaff.ejs',{user: user})%>
-             <%  })%>
+
+            <% users.map(user =>{%>
+              <%- include('./includes/cardStaff-workedHour',{user:user})%>
+            <% })%>
             
           </div>
           

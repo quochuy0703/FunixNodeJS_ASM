@@ -9,12 +9,27 @@ exports.getWorkHours = (req, res, next) => {
   //sau đó tìm kiếm thông tin giờ làm việc theo userID
   //sau đó nhâp hai thông tin này vào mảng workedHours để hiển thị lên web
 
+  let ITEMS_PER_PAGE = req.session.pageSize;
+
+  const page = +req.query.page || 1;
+  let totalItems;
+
   //tìm kiếm thông tin ngày nghỉ phép theo userID
   AnnualLeave.getLeaveById(req.user._id)
     .then((results) => {
-      //tìm kiếm thông tin giờ làm việc theo userID
-      return WorkedHour.find({ userId: req.user._id })
-        .sort({ workDate: -1 })
+      WorkedHour.find({ userId: req.user._id })
+        .countDocuments()
+        .then((numWorkedHour) => {
+          totalItems = numWorkedHour;
+          console.log(totalItems, Math.ceil(totalItems / ITEMS_PER_PAGE));
+
+          //tìm kiếm thông tin giờ làm việc theo userID
+          return WorkedHour.find({ userId: req.user._id })
+            .sort({ workDate: -1 })
+            .limit(ITEMS_PER_PAGE)
+            .skip((page - 1) * 10);
+        })
+
         .then((workedHours) => {
           workedHours.forEach((workedHour) => {
             //sumHourDiff lưu tổng số giờ của các phiên làm việc
@@ -99,6 +114,13 @@ exports.getWorkHours = (req, res, next) => {
             pageTitle: "Phiên làm việc",
             path: "/work-hour",
             workedHours: workedHours,
+            currentPage: page,
+            hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+            hasPreviousPage: page > 1,
+            nextPage: page + 1,
+            previousPage: page - 1,
+            lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+            pageSize: req.session.pageSize,
           });
         });
     })
@@ -353,4 +375,13 @@ exports.postSearch = (req, res, next) => {
   } else {
     res.redirect("/work-hour/search");
   }
+};
+
+//POST -> /work-hour/page-size
+exports.postPageSize = (req, res, next) => {
+  req.session.pageSize = parseInt(req.body.itemsPerPage);
+
+  req.session.save((err) => {
+    res.redirect("/work-hour");
+  });
 };

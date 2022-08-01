@@ -17,6 +17,7 @@ exports.postLogin = (req, res, next) => {
       bcryptjs.compare(password, user.password).then((doMatch) => {
         if (doMatch) {
           req.session.isLoggedIn = true;
+          req.session.pageSize = 10;
           req.session.user = user;
           return req.session.save((err) => {
             console.log(err);

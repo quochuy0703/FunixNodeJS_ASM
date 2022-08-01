@@ -4,6 +4,8 @@ const path = require("path");
 
 const mongoose = require("mongoose");
 
+const multer = require("multer");
+
 const session = require("express-session");
 const mongoDBStore = require("connect-mongodb-session")(session);
 
@@ -14,6 +16,7 @@ const workHoursRoutes = require("./routes/workHour");
 const covidRoutes = require("./routes/covid");
 const profileRoutes = require("./routes/profile");
 const authRoutes = require("./routes/auth");
+const manageRoutes = require("./routes/manage");
 
 const errorControllers = require("./controllers/errors");
 
@@ -33,9 +36,37 @@ store.on("error", function (error) {
 app.set("view engine", "ejs");
 app.set("views", "views");
 
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/images");
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname
+    );
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
 //xử lý body và tài nguyên static
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
+);
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "/")));
 
 app.use(
   session({
@@ -79,8 +110,18 @@ app.use(authRoutes);
 app.use("/work-hour", workHoursRoutes);
 app.use("/covid", covidRoutes);
 app.use("/profile", profileRoutes);
+app.use("/manage", manageRoutes);
 
 app.use("/", errorControllers.get404);
+
+app.use((error, req, res, next) => {
+  console.log(error);
+  res.status(500).render("500", {
+    pageTitle: "Error",
+    path: "/500",
+    isAuthenticated: req.session.isLoggedIn,
+  });
+});
 
 //thiết lập mongodb
 mongoose

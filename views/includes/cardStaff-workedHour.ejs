@@ -5,7 +5,7 @@
     </div>
     <div class="my_header_right">
       <div className="header_button">
-        <a href="/covid/staff/<%=user._id%>">pdf</a>
+        <a href="/manage/staff/<%=user._id%>">Chi tiet</a>
       </div>
       <!-- {/* <div className="header_button">
           <button>Action</button>
@@ -28,7 +28,7 @@
         <strong><%= user.fullname %></strong>
       </div>
       <div class="my_middle_content_job">
-        <small>Nhân viên</small>
+        <small><%= user.isWork%></small>
       </div>
     </div>
   </div>
@@ -48,9 +48,8 @@
       </div>
     </div>
     <div class="my_footer_end my-1">
-      <p>Covid: <%= user.isCovid %></p>
-      <p>Mũi tiêm: <%= user.injectionCovid %></p>
-      <p>Nhiệt độ: <%= user.temp.temp%> độ C</p>
+      <p>Nghỉ phép: <%= user.annualLeave %></p>
+      <p>Sinh nhật: <%= user.doB %></p>
     </div>
   </div>
 </div>

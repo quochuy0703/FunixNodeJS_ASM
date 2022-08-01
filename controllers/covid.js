@@ -4,6 +4,9 @@ const Covid = require("../models/covid");
 const Utils = require("../utils/utils");
 
 const Constants = require("../utils/constants");
+const path = require("path");
+const fs = require("fs");
+const PDFDocument = require("pdfkit");
 
 //GET --> /covid
 exports.getCovid = (req, res, next) => {
@@ -36,6 +39,10 @@ exports.postTemp = (req, res, next) => {
   temp
     .save()
     .then((temp) => {
+      req.user.temp = temp;
+      return req.user.save();
+    })
+    .then((result) => {
       res.redirect("/covid");
     })
     .catch((err) => console.log(err));
@@ -127,7 +134,7 @@ exports.postCovidInfo = (req, res, next) => {
 //GET --> /covid/covid-staff
 exports.getCovidStaff = (req, res, next) => {
   User.find({ department: req.user.department, isManager: false })
-    .populate("isCovid")
+    .populate("isCovid temp")
     .then((users) => {
       users.map((user) => {
         user._doc.startDate = Utils.DATE_UTILS.stringDate1(user.startDate);
@@ -141,12 +148,134 @@ exports.getCovidStaff = (req, res, next) => {
           user._doc.isCovid = "Chưa có thông tin";
         }
         user._doc.injectionCovid = user._doc.injectionCovid.length + " mũi";
+        if (!user.temp) {
+          const temp = {};
+          temp.temp = "--";
+          user._doc.temp = temp;
+        }
       });
       res.render("covid-staff", {
         pageTitle: "Thông tin covid",
         path: "/manager",
         users: users,
       });
+    })
+    .catch((err) => console.log(err));
+};
+
+//GET --> /covid/staff/:id
+exports.getCovidStaffInfoPdf = (req, res, next) => {
+  const userId = req.params.id;
+  User.findById(userId)
+    .populate("isCovid temp")
+    .then((user) => {
+      user._doc.startDate = Utils.DATE_UTILS.stringDate1(user.startDate);
+      if (user.isCovid) {
+        if (user.isCovid.isCovid) {
+          user._doc.isCovid = "Dương tính";
+        } else {
+          user._doc.isCovid = "Âm tính";
+        }
+      } else {
+        user._doc.isCovid = "Chưa có thông tin";
+      }
+      user._doc.injectionCovid = user._doc.injectionCovid.length + " mũi";
+      if (!user.temp) {
+        const temp = {};
+        temp.temp = "--";
+        user._doc.temp = temp;
+      }
+      const fileName = "covid-" + userId + ".pdf";
+      const pathFile = path.join("data", "covid-info", fileName);
+      const pdfDoc = new PDFDocument();
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        'attachment; filename = "' + fileName + '"'
+      );
+      pdfDoc.pipe(fs.createWriteStream(pathFile));
+      pdfDoc.pipe(res);
+      pdfDoc.font("public/fonts/times.ttf");
+      pdfDoc.text(Utils.DATE_UTILS.stringDate1(new Date()), 20, 20, {
+        lineBreak: false,
+      });
+      pdfDoc.text("", 50, 50);
+      pdfDoc.text("Thông tin covid", {
+        width: 410,
+        align: "center",
+      });
+      pdfDoc.moveDown();
+      pdfDoc.text("Tên: " + user.fullname);
+
+      pdfDoc.text("Covid: " + user.isCovid);
+      pdfDoc.text("Tiêm chủng: " + user.injectionCovid);
+      pdfDoc.text("Nhiệt độ: " + user.temp.temp + " độ C");
+
+      pdfDoc.end();
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.getCovidAllStaffInfoPdf = (req, res, next) => {
+  User.find({ department: req.user.department, isManager: false })
+    .populate("isCovid temp")
+    .then((users) => {
+      const fileName = "covid-" + req.user.department + ".pdf";
+      const pathFile = path.join("data", "covid-info", fileName);
+      const pdfDoc = new PDFDocument();
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        'attachment; filename = "' + fileName + '"'
+      );
+      pdfDoc.pipe(fs.createWriteStream(pathFile));
+      pdfDoc.pipe(res);
+      pdfDoc.font("public/fonts/times.ttf");
+
+      pdfDoc.text(Utils.DATE_UTILS.stringDate1(new Date()), 20, 20, {
+        lineBreak: false,
+      });
+      pdfDoc.text(
+        "Phòng ban: " + req.user.department,
+        pdfDoc.page.width - 100,
+        20,
+        {
+          lineBreak: false,
+        }
+      );
+      pdfDoc.text("", 50, 50);
+      pdfDoc.text("Thông tin covid", {
+        width: 410,
+        align: "center",
+      });
+
+      users.map((user) => {
+        user._doc.startDate = Utils.DATE_UTILS.stringDate1(user.startDate);
+        if (user.isCovid) {
+          if (user.isCovid.isCovid) {
+            user._doc.isCovid = "Dương tính";
+          } else {
+            user._doc.isCovid = "Âm tính";
+          }
+        } else {
+          user._doc.isCovid = "Chưa có thông tin";
+        }
+        user._doc.injectionCovid = user._doc.injectionCovid.length + " mũi";
+        if (!user.temp) {
+          const temp = {};
+          temp.temp = "--";
+          user._doc.temp = temp;
+        }
+
+        pdfDoc.moveDown();
+        pdfDoc.text("Tên: " + user.fullname);
+
+        pdfDoc.text("Covid: " + user.isCovid);
+        pdfDoc.text("Tiêm chủng: " + user.injectionCovid);
+        pdfDoc.text("Nhiệt độ: " + user.temp.temp + " độ C");
+        pdfDoc.text("-----------------------");
+      });
+      pdfDoc.end();
     })
     .catch((err) => console.log(err));
 };

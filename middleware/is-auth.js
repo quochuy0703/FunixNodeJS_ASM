@@ -1,4 +1,4 @@
-const isAuth = (req, res, next) => {
+exports.isAuth = (req, res, next) => {
   if (!req.session.isLoggedIn) {
     console.log("not auth");
     return res.redirect("/login");
@@ -6,4 +6,10 @@ const isAuth = (req, res, next) => {
   next();
 };
 
-module.exports = isAuth;
+exports.isManager = (req, res, next) => {
+  if (!req.session.user.isManager) {
+    console.log("not permission");
+    return res.redirect("/");
+  }
+  next();
+};
