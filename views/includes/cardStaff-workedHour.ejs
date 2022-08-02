@@ -4,9 +4,9 @@
       <input type="checkbox" />
     </div>
     <div class="my_header_right">
-      <div className="header_button">
-        <a href="/manage/staff/<%=user._id%>">Chi tiet</a>
-      </div>
+      <!-- <div className="header_button">
+        <a href="/manage/staff/<%=user._id%>">Chi tiết</a>
+      </div> -->
       <!-- {/* <div className="header_button">
           <button>Action</button>
         </div>
@@ -19,13 +19,15 @@
     <div class="my_middle_image">
       <img
         class="my_middle_image_avatar"
-        src="/images/alberto.png"
+        src="/<%= user.imageUrl%>"
         alt="avatar"
       />
     </div>
     <div class="my_middle_content">
       <div class="my_middle_content_name">
-        <strong><%= user.fullname %></strong>
+        <a href="/manage/staff/<%=user._id%>"
+          ><strong><%= user.fullname %></strong></a
+        >
       </div>
       <div class="my_middle_content_job">
         <small><%= user.isWork%></small>

@@ -52,7 +52,20 @@ exports.postManageStaff = (req, res, next) => {
   const yearSalary = req.body.yearWork;
   const monthSalary = req.body.monthWork;
 
-  AnnualLeave.getLeaveByMonth(monthSalary, yearSalary, userId)
+  let isLock = false;
+
+  User.findById(userId)
+    .then((user) => {
+      const stringMonthLock = `${yearSalary}-${monthSalary}`;
+      if (user._doc.hasOwnProperty("confirmWorkedHour")) {
+        if (user.confirmWorkedHour.some((el) => el === stringMonthLock)) {
+          isLock = true;
+        }
+      }
+
+      return AnnualLeave.getLeaveByMonth(monthSalary, yearSalary, userId);
+    })
+
     .then((results) => {
       return (
         WorkedHour.getWorkedHourByMonth(monthSalary, yearSalary, userId)
@@ -149,6 +162,9 @@ exports.postManageStaff = (req, res, next) => {
               workedHours: workedHours,
               isPost: true,
               staffId: userId,
+              isLock: isLock,
+              month: monthSalary,
+              year: yearSalary,
             });
           })
       );
@@ -178,7 +194,19 @@ exports.postManageConfirmStaff = (req, res, next) => {
     { $set: { isLock: true } }
   )
     .then((result) => {
-      console.log(result);
+      return User.findById(staffId);
+    })
+    .then((user) => {
+      if (user._doc.hasOwnProperty("confirmWorkedHour")) {
+        user.confirmWorkedHour.push(`${yearWork}-${monthWork}`);
+      } else {
+        let confirmWorkedHour = [];
+        confirmWorkedHour.push(`${yearWork}-${monthWork}`);
+        user.confirmWorkedHour = confirmWorkedHour;
+      }
+      return user.save();
+    })
+    .then((result) => {
       res.redirect("/manage");
     })
     .catch((err) => {

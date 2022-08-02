@@ -22,7 +22,11 @@ exports.getCovid = (req, res, next) => {
       });
       res.render("covid", { pageTitle: "Covid", path: "/covid", temps: temps });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 //POST --> /covid/temp
 exports.postTemp = (req, res, next) => {
@@ -45,7 +49,11 @@ exports.postTemp = (req, res, next) => {
     .then((result) => {
       res.redirect("/covid");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 //GET --> /covid/injection
@@ -82,7 +90,11 @@ exports.postInjection = (req, res, next) => {
   req.user
     .save()
     .then((result) => res.redirect("/covid/injection"))
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 //GET --> /covid/info-covid
@@ -104,7 +116,9 @@ exports.getCovidInfo = (req, res, next) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
 };
 
@@ -128,7 +142,11 @@ exports.postCovidInfo = (req, res, next) => {
     .then((result) => {
       res.redirect("/covid/info-covid");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 //GET --> /covid/covid-staff
@@ -160,7 +178,11 @@ exports.getCovidStaff = (req, res, next) => {
         users: users,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 //GET --> /covid/staff/:id
@@ -213,7 +235,11 @@ exports.getCovidStaffInfoPdf = (req, res, next) => {
 
       pdfDoc.end();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.getCovidAllStaffInfoPdf = (req, res, next) => {
@@ -277,5 +303,9 @@ exports.getCovidAllStaffInfoPdf = (req, res, next) => {
       });
       pdfDoc.end();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };

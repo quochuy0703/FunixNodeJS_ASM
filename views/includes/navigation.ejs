@@ -32,7 +32,7 @@
       </li>
       <%}%>
     </ul>
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav d-flex justify-content-end">
       <% if(isAuthenticated) {%>
       <li class="nav-item <%= path === '/logout' ? 'active':''%>">
         <form action="/logout" method="POST">
@@ -44,9 +44,6 @@
       <% }else{%>
       <li class="nav-item <%= path === '/login' ? 'active':''%>">
         <a class="nav-link" href="/login">Login</a>
-      </li>
-      <li class="nav-item <%= path === '/signup' ? 'active':''%>">
-        <a class="nav-link" href="/signup">Signup</a>
       </li>
       <% }%>
     </ul>

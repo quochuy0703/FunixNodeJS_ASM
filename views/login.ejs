@@ -6,8 +6,20 @@
     <!-- Body -->
 
     <section class="vh-100" style="background-color: #508bfc;">
+      
       <div class="container py-5 h-100">
+        <% if(errorMessage){%>
+        <div class="row d-flex justify-content-center align-items-center">
+          <div class="col-12 col-md-8 col-lg-6 col-xl-5 ">
+            <div class="m-auto text-center bg-info w-75 p-2" style="border-radius: 0.5rem; ">
+              <span ><%= errorMessage%></span>
+            </div>
+            
+          </div>
+        </div>
+        <% }%>
         <div class="row d-flex justify-content-center align-items-center h-100">
+          
           <div class="col-12 col-md-8 col-lg-6 col-xl-5">
             <div class="card shadow-2-strong" style="border-radius: 1rem;">
               <form class="card-body p-5" action="/login" method="POST">
@@ -16,11 +28,11 @@
     
                 <div class="mb-3">
                   <label for="email">Địa chỉ email</label>
-                  <input type="text" class="form-control" name="email" id="email" >
+                  <input type="text" class="form-control" name="email" id="email" value="<%= oldInput.email%>" >
                 </div>
                 <div class=" mb-3">
                   <label for="password">Mật khẩu</label>
-                  <input type="password" class="form-control" name="password" id="password" >
+                  <input type="password" class="form-control" name="password" id="password" value="<%= oldInput.password%>">
                 </div>
     
                 <!-- Checkbox -->

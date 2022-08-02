@@ -27,7 +27,7 @@ exports.getEditProfile = (req, res, next) => {
 exports.postEditProfile = (req, res, next) => {
   const image = req.file;
   if (!image) {
-    res.redirect("/profile");
+    return res.redirect("/profile");
   }
   req.user.imageUrl = image.path;
   req.user
@@ -35,5 +35,9 @@ exports.postEditProfile = (req, res, next) => {
     .then((result) => {
       res.redirect("/profile");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };

@@ -65,15 +65,13 @@
       <div class="card my-3">
         <div class="card-header">
           <h4 class="text-center">Phiên làm việc</h4>
+          
         </div>
+       
         <div class="card-body">
           
           <% if(isPost){%>
-            <form action="/manage/confirm/staff/<%=staffId%>" method="POST">
-              <input type="hidden" name="monthWork" value="06"/>
-              <input type="hidden" name="yearWork" value="2022"/>
-              <button type="submit" class="btn btn-primary">Xác nhận</button>
-            </form>
+            
           <!-- ----------------------------------->
           <table class="table">
            
@@ -125,6 +123,15 @@
               
             </tbody>
           </table>
+          <% if(!isLock){%>
+            <form class="text-center" action="/manage/confirm/staff/<%=staffId%>" method="POST">
+              <input type="hidden" name="monthWork" value="<%= month%>"/>
+              <input type="hidden" name="yearWork" value="<%= year%>"/>
+              
+              <button type="submit" class="btn btn-primary">Xác nhận thời gian làm việc</button>
+              
+            </form>
+            <% }%>
 
           <% }else{%>
           <p>Chưa có dữ liệu</p>

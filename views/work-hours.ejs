@@ -27,6 +27,9 @@
       <div class="card my-3">
         <div class="card-header">
           <h4 class="text-center">Phiên làm việc</h4>
+          
+          <h6 class="text-center">Quản lý trực tiếp: <%= manager? manager.fullname + " (id: "+manager._id +")" : "--" %></h6>
+          
         </div>
         <div class="card-body">
           <%- include('./includes/pagination.ejs',{currentPage: currentPage, hasNextPage: hasNextPage, nextPage: nextPage, 

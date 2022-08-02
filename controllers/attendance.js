@@ -136,7 +136,11 @@ exports.postCheckIn = (req, res, next) => {
     .then((result) => {
       res.redirect("/");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 //POST -> /checkout
@@ -170,7 +174,11 @@ exports.postCheckOut = (req, res, next) => {
       res.redirect("/");
     })
 
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 //GET -> /leave
@@ -234,6 +242,10 @@ exports.postLeave = (req, res, next) => {
       .then((result) => {
         res.redirect("/");
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+      })
   );
 };

@@ -1,21 +1,35 @@
 const WorkedHour = require("../models/workedHour");
+const User = require("../models/user");
 const AnnualLeave = require("../models/anualLeave");
 const Constants = require("../utils/constants");
 const Utils = require("../utils/utils");
 
 //GET -> /work-hour
 exports.getWorkHours = (req, res, next) => {
+  //ITEMS_PER_PAGE số trang sẽ được hiển thị
+  let ITEMS_PER_PAGE = req.session.pageSize;
+  //nếu không có page thì sẽ là 1
+  const page = +req.query.page || 1;
+  //tổng số trang được trả về
+  let totalItems;
+
+  //lưu thông tin quản lý
+  let manager = null;
+
   //Tìm kiếm thông tin ngày nghỉ phép theo userID (getLeaveById)
   //sau đó tìm kiếm thông tin giờ làm việc theo userID
   //sau đó nhâp hai thông tin này vào mảng workedHours để hiển thị lên web
-
-  let ITEMS_PER_PAGE = req.session.pageSize;
-
-  const page = +req.query.page || 1;
-  let totalItems;
-
   //tìm kiếm thông tin ngày nghỉ phép theo userID
-  AnnualLeave.getLeaveById(req.user._id)
+
+  User.getManagerOnDepartment(req.user.department)
+    .then((users) => {
+      if (!req.user.isManager) {
+        manager = users[0];
+      }
+
+      return AnnualLeave.getLeaveById(req.user._id);
+    })
+
     .then((results) => {
       WorkedHour.find({ userId: req.user._id })
         .countDocuments()
@@ -114,6 +128,7 @@ exports.getWorkHours = (req, res, next) => {
             pageTitle: "Phiên làm việc",
             path: "/work-hour",
             workedHours: workedHours,
+            manager: manager,
             currentPage: page,
             hasNextPage: ITEMS_PER_PAGE * page < totalItems,
             hasPreviousPage: page > 1,
@@ -125,7 +140,11 @@ exports.getWorkHours = (req, res, next) => {
         });
     })
 
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 //GET -> /work-hour/annual-leaves
@@ -156,7 +175,11 @@ exports.getAnnualLeave = (req, res, next) => {
         annualLeaves: annualLeaves,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 //GET -> /work-hour/salary
@@ -262,7 +285,11 @@ exports.postSalary = (req, res, next) => {
         workedHours: workedHours,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 //GET -> /work-hour/search
@@ -371,7 +398,11 @@ exports.postSearch = (req, res, next) => {
           workedHours: workedHours,
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+      });
   } else {
     res.redirect("/work-hour/search");
   }

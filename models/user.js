@@ -92,7 +92,16 @@ const userSchema = new Schema({
       },
     },
   ],
+  confirmWorkedHour: [
+    {
+      type: String,
+      required: false,
+    },
+  ],
 });
+userSchema.statics.getManagerOnDepartment = (dept) => {
+  return User.find({ department: dept, isManager: true });
+};
 
 const User = mongoose.model("user", userSchema);
 
