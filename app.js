@@ -144,7 +144,7 @@ mongoose
   // })
   .then((result) => {
     console.log("Database connect!!");
-    app.listen(process.env.PORT || 8080, () => {
+    app.listen(process.env.PORT || 8080, "0.0.0.0", () => {
       console.log("server run!");
     });
   })
