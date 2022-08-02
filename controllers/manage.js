@@ -1,8 +1,8 @@
 const User = require("../models/user");
 const AnnualLeave = require("../models/anualLeave");
 const WorkedHour = require("../models/workedHour");
-const Utils = require("../Utils/utils");
-const Constants = require("../Utils/constants");
+const Utils = require("../utils/utils");
+const Constants = require("../utils/constants");
 
 const mongoose = require("mongoose");
 
