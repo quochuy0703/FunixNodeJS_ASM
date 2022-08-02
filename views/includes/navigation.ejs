@@ -13,8 +13,8 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <% if(isAuthenticated) {%>
     <ul class="navbar-nav mr-auto">
+      <% if(isAuthenticated) {%>
       <li class="nav-item <%= path === '/' ? 'active':''%>">
         <a class="nav-link" href="/">Điểm danh </a>
       </li>
