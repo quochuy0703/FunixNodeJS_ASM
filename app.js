@@ -143,7 +143,7 @@ mongoose
   //   return user.save();
   // })
   .then((result) => {
-    console.log("Database connect!");
+    console.log("Database connect!!");
     app.listen(process.env.PORT || 8080, () => {
       console.log("server run!");
     });
