@@ -8,8 +8,10 @@ const mongoose = require("mongoose");
 
 // GET => /manage
 exports.getManage = (req, res, next) => {
+  //Tìm các nhân viên của phòng
   User.find({ department: req.user.department, isManager: false })
     .then((users) => {
+      //Chuẩn bị dữ liệu để render
       users.map((user) => {
         user._doc.startDate = Utils.DATE_UTILS.stringDate1(user.startDate);
         user._doc.doB = Utils.DATE_UTILS.stringDate1(user.doB);
@@ -47,15 +49,19 @@ exports.getManageStaff = (req, res, next) => {
 
 // POST => /manage/staff/:id
 exports.postManageStaff = (req, res, next) => {
+  //lưu id của staff
   const userId = req.params.id;
 
+  //lưu dữ liệu tháng năm
   const yearSalary = req.body.yearWork;
   const monthSalary = req.body.monthWork;
 
+  //biến isLock sẽ lưu thông tin tháng được chọn đã xác nhận chưa
   let isLock = false;
 
   User.findById(userId)
     .then((user) => {
+      //Tìm kiếm tháng  đã confirm của staff
       const stringMonthLock = `${yearSalary}-${monthSalary}`;
       if (user._doc.hasOwnProperty("confirmWorkedHour")) {
         if (user.confirmWorkedHour.some((el) => el === stringMonthLock)) {
@@ -178,10 +184,12 @@ exports.postManageStaff = (req, res, next) => {
 };
 
 exports.postManageConfirmStaff = (req, res, next) => {
+  //
   const staffId = req.params.id;
   const monthWork = req.body.monthWork;
   const yearWork = req.body.yearWork;
-  console.log(monthWork, yearWork);
+
+  //sẽ set trường isLock của các workedHour trong tháng đó là true
   WorkedHour.updateMany(
     {
       $expr: {
@@ -197,6 +205,7 @@ exports.postManageConfirmStaff = (req, res, next) => {
       return User.findById(staffId);
     })
     .then((user) => {
+      //thêm dữ liệu theo dạng year-month vào mảng confirmWorkedHour của user
       if (user._doc.hasOwnProperty("confirmWorkedHour")) {
         user.confirmWorkedHour.push(`${yearWork}-${monthWork}`);
       } else {
@@ -219,6 +228,7 @@ exports.postManageConfirmStaff = (req, res, next) => {
 exports.getManageEditStaff = (req, res, next) => {
   const sessionId = req.params.id;
 
+  // xoá thông tin phiên làm việc
   WorkedHour.updateOne(
     {
       "sessionWorks._id": new mongoose.mongo.ObjectId(sessionId),

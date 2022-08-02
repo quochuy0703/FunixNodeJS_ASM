@@ -151,9 +151,11 @@ exports.postCovidInfo = (req, res, next) => {
 
 //GET --> /covid/covid-staff
 exports.getCovidStaff = (req, res, next) => {
+  //lấy các nhân viên trong phòng
   User.find({ department: req.user.department, isManager: false })
     .populate("isCovid temp")
     .then((users) => {
+      //chuẩn bị dữ liệu để render
       users.map((user) => {
         user._doc.startDate = Utils.DATE_UTILS.stringDate1(user.startDate);
         if (user.isCovid) {
@@ -187,7 +189,9 @@ exports.getCovidStaff = (req, res, next) => {
 
 //GET --> /covid/staff/:id
 exports.getCovidStaffInfoPdf = (req, res, next) => {
+  //lưu trữ id nhân viên được chọn
   const userId = req.params.id;
+  //tìm nhân viên được chọn
   User.findById(userId)
     .populate("isCovid temp")
     .then((user) => {
@@ -207,6 +211,7 @@ exports.getCovidStaffInfoPdf = (req, res, next) => {
         temp.temp = "--";
         user._doc.temp = temp;
       }
+      //xuất pdf
       const fileName = "covid-" + userId + ".pdf";
       const pathFile = path.join("data", "covid-info", fileName);
       const pdfDoc = new PDFDocument();
@@ -243,9 +248,11 @@ exports.getCovidStaffInfoPdf = (req, res, next) => {
 };
 
 exports.getCovidAllStaffInfoPdf = (req, res, next) => {
+  //Tìm tất cả của user của phòng
   User.find({ department: req.user.department, isManager: false })
     .populate("isCovid temp")
     .then((users) => {
+      //xuất pdf
       const fileName = "covid-" + req.user.department + ".pdf";
       const pathFile = path.join("data", "covid-info", fileName);
       const pdfDoc = new PDFDocument();
@@ -275,6 +282,7 @@ exports.getCovidAllStaffInfoPdf = (req, res, next) => {
         align: "center",
       });
 
+      //chuẩn bị thông tin để xuất pdf
       users.map((user) => {
         user._doc.startDate = Utils.DATE_UTILS.stringDate1(user.startDate);
         if (user.isCovid) {
